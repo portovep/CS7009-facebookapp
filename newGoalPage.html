@@ -15,18 +15,32 @@
 		});
 	</script>
 	<script type="text/javascript">
-
-		//TODO: Doesn't check public checkbox
-		//TODO: Make this more readable.
-		//TODO: replace " " with %20
+		
+		//TODO: Get Username and Image.
+		//TODO: Get a nice image to go on the right side.
 
 		function postToFeed() {
 
 			var username = "Placeholder";
+			var goalTypeSelect = document.getElementById('ddGoalType').value;
+			var goalType = "";
 			var goalTitle = document.getElementById('tbGoalName').value;
 			var goalDesc = document.getElementById('tbGoalDesc').value;
 
-			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture=http://improve-facebookapp.appspot.com/bootstrap/img/target.jpg&name=" + username + "%20Has%20Set%20A%20New%20Goal&caption=Something%20Caption&description= " + goalTitle + "%20and%20" + goalDesc + "&redirect_uri=http://apps.facebook.com/improve-app";
+			switch (goalTypeSelect)
+			{
+			case "fitnessGoal":
+ 				goalType="A Fitness Goal";
+				break;
+			case "academicGoal":
+				goalType="An Academic Goal";
+				break;
+			case "lifeGoal":
+				goalType="A Life Goal";
+				break;
+			} 
+
+			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture=Placeholder.jpg&name=" + username + "%20Has%20Set%20A%20New%20Goal&caption= " + goalType + "&description= " + goalTitle + "%20and%20" + goalDesc + "&redirect_uri=http://apps.facebook.com/improve-app";
       }
 
 	</script>
@@ -38,7 +52,6 @@
 	<table>
 	  <tr>
 	    
-
 	      <th>Name </th>
 	      <th>Category</th>
 	      <th>Description</th>
@@ -75,7 +88,7 @@
 	{% endif %}
 		
 
-	    <form action="/newGoal" method="get" class="well">
+	<form action="/newGoal" method="get" class="well">
 	        
 	<div class="container">
 		<div class="row">
@@ -85,7 +98,17 @@
 		</div>
 		<div class="row">
 			<div class="span2"><h4>This is a ... </h4></div>
-			<div class="span4">"DropDown Plchlder"</div>
+			<div class="span4"><fieldset>          
+        		<div class="control-group">
+        			<div class="controls">
+          			 <select id = "ddGoalType">
+               	 	 <option value="fitnessGoal">Fitness Goal</option>
+                	 <option value="academicGoal">Academic Goal</option>
+                	 <option value="lifeGoal">Life Goal</option>
+            		</select>
+        			</div>
+        		</div>
+   		 </fieldset></div>
 		</div>
 		<div class="row">
 			<div class="span2"><h4>Goal Title</h4></div>
@@ -96,16 +119,22 @@
 			<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription"> </textarea></div>
 		</div>
 		<div class="row">
-			<div class="span2"><h4>I Want This By</h4></div>
+			<div class="span2"><h4>I Want It By</h4></div>
 			<div class="span4"><input type="text" class="span2" value="02/16/12" data-date-format="mm/dd/yy" id="datePickerDL" ></input></div>
 		</div>
 		<div class="row">
-			<div class="span2"><h4>Let All My Friends Know?</h4></div>
-			<div class="span4">"CheckBox Plchlder"</div>
+			<div class="span6"><hr></div>
 		</div>
-		<div class="row"></div>
 		<div class="row">
-			<div class="span2 offset1"><button id="btnGoalSubmit" class="btn btn-primary" type="button" onclick="postToFeed()">Make A New Goal!</button></div>
+			<div class="span4 offset1"><h4>Let All My Friends Know?</h4></div>
+		</div>
+		<div class="row">
+			<div class="span6"><br/></div>
+		</div>
+		
+		<div class="row">
+			<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="button" onclick="postToFeed()">Tell The World!</button></div>
+			<div class="span3 offset1"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="button">Private Goal</button></div>
 		</div>
 	                
 
