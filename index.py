@@ -1,23 +1,64 @@
 # -*- encoding: utf-8 -*-
+
+import facebook
+
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 
 
+FACEBOOK_APP_ID = "435215956532387"
+FACEBOOK_APP_SECRET = "a6eddd2d723debb7dd59d4e0e7cb4eee"
+
+
+class User(db.Model):
+    id = db.StringProperty(required=True)
+    created = db.DateTimeProperty(auto_now_add=True)
+    updated = db.DateTimeProperty(auto_now=True)
+    name = db.StringProperty(required=True)
+    profile_url = db.StringProperty(required=True)
+    access_token = db.StringProperty(required=True)
+
 class Goal(db.Model):
-  """Models an individual Goal"""
-  name = db.StringProperty()
-  category = db.StringProperty()
-  description = db.StringProperty(multiline=True)
-  dueDate = db.StringProperty()
-  public = db.BooleanProperty()
-  created = db.DateTimeProperty(auto_now_add=True)
-  finished = db.BooleanProperty()
+    """Models an individual Goal"""
+    name = db.StringProperty()
+    category = db.StringProperty()
+    description = db.StringProperty(multiline=True)
+    dueDate = db.StringProperty()
+    public = db.BooleanProperty()
+    created = db.DateTimeProperty(auto_now_add=True)
+    finished = db.BooleanProperty()
 
 def goal_key(goal_author):
   """Constructs a Datastore key for a Goal entity with goal_author."""
   return db.Key.from_path('Goal', goal_author)
+
+
+class BaseHandler(webapp.RequestHandler):
+
+    @property
+    def current_user(self):
+        if not hasattr(self, "_current_user"):
+            self._current_user = None
+            cookie = facebook.get_user_from_cookie(
+                self.request.cookies, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET)
+            if cookie:
+                user = User.get_by_key_name(cookie["uid"])
+                if not user:
+                    graph = facebook.GraphAPI(cookie["access_token"])
+                    profile = graph.get_object("me")
+                    user = User(key_name=str(profile["id"]),
+                                id=str(profile["id"]),
+                                name=profile["name"],
+                                profile_url=profile["link"],
+                                access_token=cookie["access_token"])
+                    user.put()
+                elif user.access_token != cookie["access_token"]:
+                    user.access_token = cookie["access_token"]
+                    user.put()
+                self._current_user = user
+        return self._current_user
 
 class GoalHandler(webapp.RequestHandler):
 
@@ -98,11 +139,13 @@ class GoalViewerHandler(webapp.RequestHandler):
 
         self.response.out.write(template.render('listAllGoalsPage.html', template_values))
 
-class MainHandler(webapp.RequestHandler):
+class MainHandler(BaseHandler):
 
     def get(self):
         html_title = 'Improve!'
         template_values = {
+            'current_user' : self.current_user,
+            'facebook_app_id' : FACEBOOK_APP_ID,
             'html_title': html_title
         }
         self.response.out.write(template.render('index.html', template_values))
@@ -110,9 +153,11 @@ class MainHandler(webapp.RequestHandler):
     def post(self):
         html_title = 'Improve!'
         template_values = {
-            'html_title': html_title,
+            'current_user' : self.current_user,
+            'facebook_app_id' : FACEBOOK_APP_ID,
+            'html_title': html_title
         }
-        self.response.out.write(template.render('index.html', template_values))
+        self.response.out.write(template.render('index.html', template_values))  
 
 def main():
     application = webapp.WSGIApplication(

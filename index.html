@@ -4,11 +4,11 @@
 	        <li class="active"><a href="#">Home</a></li>
 	        <li><a href="newGoal">New goal</a></li>
 	        <li><a href="goalViewer">Your goals</a></li>
-	        <li><a href="#">Profile</a></li>
+          <li><a class="pull-right" href="#">Profile</a></li>
 {% endblock %}	
 {% block body %}
 	<div class="hero-unit">
-  <h1>Welcome to Improve!</h1>
+  <h1>Welcome to Improve {% if current_user %} {{ current_user.name }} {% endif %} !</h1>
   <br>
     <p>
     Improve! helps you to achieve your goals and challenge yourself. Your friends can support you to complete your challenges<br>

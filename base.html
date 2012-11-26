@@ -17,70 +17,23 @@
 
     <script src='http://connect.facebook.net/en_US/all.js'></script>
     <div id="fb-root"></div>
-      <script>
-           window.fbAsyncInit = function() {
-            // init the FB JS SDK
-            FB.init({
-              appId      : '435215956532387', // App ID from the App Dashboard
-              cookie     : true, // set sessions cookies to allow your server to access the session?
-              xfbml      : true  // parse XFBML tags on this page?
-            });
 
-            // Additional initialization code such as adding Event Listeners goes here
-
-          };
-
-          // Load the SDK's source Asynchronously
-          // Note that the debug version is being actively developed and might 
-          // contain some type checks that are overly strict. 
-          // Please report such bugs using the bugs tool.
-          (function(d, debug){
-             var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-             if (d.getElementById(id)) {return;}
-             js = d.createElement('script'); js.id = id; js.async = true;
-             js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
-             ref.parentNode.insertBefore(js, ref);
-           }(document, /*debug*/ false));
-
-      </script>
-
-
-  <script>
-  function testAPI() {
-      FB.api('/me', function(response) {
-          alert('Your name is ' + response.name);
-          console.log('Good to see you, ' + response.id + '.');
-      });
-  }
-
-
-  function login() {
-      FB.login(function(response) {
-          if (response.authResponse) {
-              // connected
-              testAPI();
-          } else {
-              // cancelled
-          }
-      });
-  }
-
-  function getFBPerms()
-  {
-    FB.getLoginStatus(function(response) {
-    if (response.status === 'connected') {
-      testAPI();
-    }
-    else if (response.status === 'not_authorized') {
-          window.location = "https://www.facebook.com/dialog/oauth?client_id=435215956532387&redirect_uri=https://apps.facebook.com/435215956532387/&scope=basic,publish_stream";
-      } else {
-          // not_logged_in
-          login();
-          testAPI();
-      }
-  });
-     }
-  </script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({appId: '{{ facebook_app_id }}', status: true, cookie: true,
+                 xfbml: true});
+        FB.Event.subscribe('{% if current_user %}auth.logout{% else %}auth.login{% endif %}', function(response) {
+          window.location.reload();
+        });
+      };
+      (function() {
+        var e = document.createElement('script');
+        e.type = 'text/javascript';
+        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+        e.async = true;
+        document.getElementById('fb-root').appendChild(e);
+      }());
+    </script>
 
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
       <script src="bootstrap/js/bootstrap.min.js"></script>
