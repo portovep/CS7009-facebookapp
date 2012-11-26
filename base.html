@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>
+        {% block title %}Welcome{% endblock %} &mdash; Improve! 
+      </title>
+      <meta name="description" content="Facebook app">
+      <meta name="author" content="None">
+      <!—[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]—>
+      <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">  
+  </head>
+  <body background="bootstrap/img/bg.png" onload="getFBPerms()">
+
+
+    <div id="fb-root"></div>
+      <script>
+           window.fbAsyncInit = function() {
+            // init the FB JS SDK
+            FB.init({
+              appId      : '435215956532387', // App ID from the App Dashboard
+              cookie     : true, // set sessions cookies to allow your server to access the session?
+              xfbml      : true  // parse XFBML tags on this page?
+            });
+
+            // Additional initialization code such as adding Event Listeners goes here
+
+          };
+
+          // Load the SDK's source Asynchronously
+          // Note that the debug version is being actively developed and might 
+          // contain some type checks that are overly strict. 
+          // Please report such bugs using the bugs tool.
+          (function(d, debug){
+             var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement('script'); js.id = id; js.async = true;
+             js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
+             ref.parentNode.insertBefore(js, ref);
+           }(document, /*debug*/ false));
+
+      </script>
+
+
+  <script>
+  function testAPI() {
+      FB.api('/me', function(response) {
+          alert('Your name is ' + response.name);
+          console.log('Good to see you, ' + response.id + '.');
+      });
+  }
+
+
+  function login() {
+      FB.login(function(response) {
+          if (response.authResponse) {
+              // connected
+              testAPI();
+          } else {
+              // cancelled
+          }
+      });
+  }
+
+  function getFBPerms()
+  {
+    FB.getLoginStatus(function(response) {
+    if (response.status === 'connected') {
+      testAPI();
+    }
+    else if (response.status === 'not_authorized') {
+          window.location = "https://www.facebook.com/dialog/oauth?client_id=435215956532387&redirect_uri=https://apps.facebook.com/435215956532387/&scope=basic,publish_stream";
+      } else {
+          // not_logged_in
+          login();
+          testAPI();
+      }
+  });
+     }
+  </script>
+
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+      <script src="bootstrap/js/bootstrap.min.js"></script>
+      <div class="navbar navbar-fixed-top">
+  	  <div class="navbar-inner">
+  	    <div class="container">
+  	      <a class="brand" href="#">IMPROVE!</a>
+  	      <ul class="nav">
+            {% block nav %}Welcome{% endblock %}
+  	      </ul>
+  	    </div>
+  	  </div>
+     </div>
+
+    {% block body %}{% endblock %} 
+  </body>
+</html>

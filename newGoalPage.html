@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %} Create a new goal {% endblock %}
+{% block nav %}
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="#">New goal</a></li>
+            <li><a href="goalViewer">Your goals</a></li>
+            <li><a href="#">Profile</a></li>
+{% endblock %}
+
+{% block body %}
+	<script src="bootstrap/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#datePickerDL').datepicker();
+		});
+	</script>
+	{% if goal %}
+	 
+	New goal created
+
+	<table>
+	  <tr>
+	    
+
+	      <th>Name </th>
+	      <th>Category</th>
+	      <th>Description</th>
+	      <th>Due date</th>
+	      <th>Created</th>
+	      <th>Public</th>
+	    </tr>
+	<tr> 
+	<td>
+	{{goal.name}}
+	</td>
+	<td>
+	{{goal.category}}
+	</td>
+	<td>
+	{{goal.description}}
+	</td>
+	<td>
+	{% if goal.dueDate %}
+	{{goal.dueDate}}
+	{% endif %}
+	</td>
+	<td>
+	{{goal.created|date:"d.m.Y"}}
+	</td>
+	<td>
+	{{goal.public}}
+	</td>
+	</table>
+
+	<br>
+	<br>
+	<br>
+	{% endif %}
+		
+
+	    <form action="/newGoal" method="get" class="well">
+	        
+	<div class="container">
+		<div class="row">
+		<div class="span12">
+		<h1>Set A New Goal!</h1> 
+		</div>
+		</div>
+		<div class="row">
+			<div class="span2"><h4>This is a ... </h4></div>
+			<div class="span4">"DropDown Plchlder"</div>
+		</div>
+		<div class="row">
+			<div class="span2"><h4>Goal Title</h4></div>
+			<div class="span4"><input id="tbGoalName" name="goalName" class="text" type="text"/></div>
+		</div>
+		<div class="row">
+			<div class="span2"><h4>I Want To...</h4></div>
+			<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription"> </textarea></div>
+		</div>
+		<div class="row">
+			<div class="span2"><h4>I Want This By</h4></div>
+			<div class="span4"><input type="text" class="span2" value="02/16/12" data-date-format="mm/dd/yy" id="datePickerDL" ></input></div>
+		</div>
+		<div class="row">
+			<div class="span2"><h4>Let All My Friends Know?</h4></div>
+			<div class="span4">"CheckBox Plchlder"</div>
+		</div>
+		<div class="row"></div>
+		<div class="row">
+			<div class="span2 offset1"><button id="btnGoalSubmit" class="btn btn-primary" type="button">Make A New Goal!</button></div>
+		</div>
+	                
+
+	</div>
+		</form>
+
+{% endblock %}
