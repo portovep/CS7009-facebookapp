@@ -14,6 +14,23 @@
 			$('#datePickerDL').datepicker();
 		});
 	</script>
+	<script type="text/javascript">
+
+		//TODO: Doesn't check public checkbox
+		//TODO: Make this more readable.
+		//TODO: replace " " with %20
+
+		function postToFeed() {
+
+			var username = "Placeholder";
+			var goalTitle = document.getElementById('tbGoalName').value;
+			var goalDesc = document.getElementById('tbGoalDesc').value;
+
+			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture=http://improve-facebookapp.appspot.com/bootstrap/img/target.jpg&name=" + username + "%20Has%20Set%20A%20New%20Goal&caption=Something%20Caption&description= " + goalTitle + "%20and%20" + goalDesc + "&redirect_uri=http://apps.facebook.com/improve-app";
+      }
+
+	</script>
+
 	{% if goal %}
 	 
 	New goal created
@@ -88,7 +105,7 @@
 		</div>
 		<div class="row"></div>
 		<div class="row">
-			<div class="span2 offset1"><button id="btnGoalSubmit" class="btn btn-primary" type="button">Make A New Goal!</button></div>
+			<div class="span2 offset1"><button id="btnGoalSubmit" class="btn btn-primary" type="button" onclick="postToFeed()">Make A New Goal!</button></div>
 		</div>
 	                
 
