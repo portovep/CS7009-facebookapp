@@ -25,7 +25,7 @@
 
 		function postToFeed() {
 
-			var username = "Placeholder";
+			var username = {% if current_user %} {{ current_user.name }} {% endif %};
 			var goalTypeSelect = document.getElementById('ddGoalType').value;
 			var goalType = "";
 			var pictureLink = "Placeholder.jpg";
