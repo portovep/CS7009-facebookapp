@@ -25,10 +25,7 @@
 
 		function postToFeed() {
 
-			FB.api('/me', function(response) {
-	    		var username = response.name;
-			});
-
+			var username = "Placeholder";
 			var goalTypeSelect = document.getElementById('ddGoalType').value;
 			var goalType = "";
 			var pictureLink = "Placeholder.jpg";
@@ -104,7 +101,6 @@
 		<div class="row">
 		<div class="span12">
 		<h1>Set A New Goal!</h1> 
-		<br/>
 		</div>
 		</div>
 		<div class="row">
