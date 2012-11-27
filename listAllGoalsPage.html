@@ -10,200 +10,14 @@
 {% block body %}
     <style type="text/css">
       body { padding-top: 60px; }
-        .menuBar
-        {
-            font-family: Arial, Helvetica, sans-serif;
-            height: 64px;
-            font-size: x-large;
-            font-weight: normal;
-        }
-        .sidebar
-        {
-            width: 18px;
-        }
-        .style20
-        {
-            height: 35px;
-            width: 30px;
-            text-align: center;
-        }
-        .style21
-        {
-            width: 30px;
-        }
-        #tbGoalDesc
-        {
-            width: 362px;
-            height: 66px;
-        }
-        .style29
-        {
-            width: 30px;
-            height: 66px;
-            text-align: left;
-        }
-        .style34
-        {
-            height: 35px;
-            width: 73px;
-            text-align: center;
-        }
-        .style35
-        {
-            height: 66px;
-            width: 73px;
-            text-align: left;
-        }
-        .style42
-        {
-            height: 35px;
-            width: 100px;
-            text-align: center;
-        }
-        .style43
-        {
-            width: 100px;
-            height: 66px;
-            text-align: left;
-        }
-        .style44
-        {
-            width: 100px;
-        }
-        .style45
-        {
-            height: 35px;
-            width: 60px;
-            text-align: center;
-        }
-        .style46
-        {
-            width: 60px;
-            height: 66px;
-            text-align: left;
-        }
-        .style47
-        {
-            width: 60px;
-        }
-        .style48
-        {
-            width: 73px;
-        }
-        .style52
-        {
-            height: 35px;
-            width: 15px;
-            text-align: center;
-        }
-        .style53
-        {
-            height: 66px;
-            width: 15px;
-            text-align: left;
-        }
-        .style54
-        {
-            width: 15px;
-        }
-        .style55
-        {
-            height: 35px;
-            width: 394px;
-            text-align: center;
-        }
-        .style56
-        {
-            height: 66px;
-            width: 394px;
-            text-align: center;
-        }
-        .style57
-        {
-            width: 394px;
-        }
-        .style58
-        {
-            height: 3px;
-            width: 73px;
-            text-align: justify;
-        }
-        .style59
-        {
-            height: 3px;
-            width: 60px;
-            text-align: justify;
-        }
-        .style60
-        {
-            height: 3px;
-            width: 100px;
-            text-align: justify;
-        }
-        .style62
-        {
-            height: 3px;
-            width: 30px;
-            text-align: justify;
-        }
-        .style63
-        {
-            height: 3px;
-            width: 15px;
-            text-align: justify;
-        }
-        .style64
-        {
-            height: 3px;
-            width: 394px;
-            text-align: center;
-        }
-        .style65
-        {
-            height: 35px;
-            width: 32px;
-            text-align: center;
-        }
-        .style66
-        {
-            height: 3px;
-            width: 32px;
-            text-align: justify;
-        }
-        .style67
-        {
-            width: 32px;
-            height: 66px;
-            text-align: left;
-        }
-        .style68
-        {
-            width: 32px;
-        }
-        .SubmitButton
-        {
-            font-family: Arial, Helvetica, sans-serif;
-            height: 38px;
-            width: 172px;
-            font-weight: 700;
-        }
-        .style70
-        {}
-        #Checkbox1
-        {
-            text-align: center;
-        }
+        
         </style>
 
-        
-
-    <table style="width:100%;">
-        <tr>
-        <td class="menuBar" bgcolor="Chartreuse">
-
-        &nbsp;Active goals!</td>
-                    </tr>
-    </table>
+        <div class="container">
+            <div class="row">
+                <div class="span12"><h1>Active Goals!</h1></div>
+            </div>
+        </div>
 
     <br/>
 
@@ -239,9 +53,9 @@
                 </td>
                 <td> {{ goal.public }}
                 </td>
-                <td> <input class='btn' name='action' type="submit" value="Remove">
+                <td> <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
                 </td>
-                <td> <input class='btn' name='action' type="submit" value="Check">
+                <td> <input class='btn btn-success' name='action' type="submit" value="Check"/>
                 </td>  
             </tr>
 
@@ -255,13 +69,11 @@
         </thead> 
     </table>
 
-    <table style="width:100%;">
-        <tr>
-        <td class="menuBar" bgcolor="Chartreuse">
-
-        &nbsp;Completed goals!</td>
-                    </tr>
-    </table>
+        <div class="container">
+            <div class="row">
+                <div class="span12"><h1>Completed Goals!</h1></div>
+            </div>
+        </div>
 
     <table class="table table-striped">
         <thead>  
@@ -293,7 +105,7 @@
                 </td>
                 <td> {{ goal.public }}
                 </td>
-                <td> <input class='btn' name='action' type="submit" value="Remove">
+                <td> <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
                 </td>
             </tr>
 
