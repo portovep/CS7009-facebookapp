@@ -8,6 +8,10 @@
 {% endblock %}
 
 {% block body %}
+    <style type="text/css">
+      body { padding-top: 60px; }
+    </style>
+
 	<script src="bootstrap/js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript">
 		$(function(){
@@ -24,8 +28,11 @@
 			var username = "Placeholder";
 			var goalTypeSelect = document.getElementById('ddGoalType').value;
 			var goalType = "";
+			var pictureLink = "Placeholder.jpg";
 			var goalTitle = document.getElementById('tbGoalName').value;
 			var goalDesc = document.getElementById('tbGoalDesc').value;
+			var goalDeadline = document.getElementById('datePickerDL').value;
+			var fbDescription = username + " wants to " + goalDesc + " by " + goalDeadline;
 
 			switch (goalTypeSelect)
 			{
@@ -40,7 +47,7 @@
 				break;
 			} 
 
-			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture=Placeholder.jpg&name=" + username + "%20Has%20Set%20A%20New%20Goal&caption= " + goalType + "&description= " + goalTitle + "%20and%20" + goalDesc + "&redirect_uri=http://apps.facebook.com/improve-app";
+			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture= " + pictureLink + "&name=" + username + "%20Has%20Set%20A%20New%20Goal&caption= " + goalType + "&description= " + fbDescription + "&redirect_uri=http://apps.facebook.com/improve-app";
       }
 
 	</script>
@@ -134,7 +141,7 @@
 		
 		<div class="row">
 			<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="button" onclick="postToFeed()">Tell The World!</button></div>
-			<div class="span3 offset1"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="button">Private Goal</button></div>
+			<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="button">Private Goal</button></div>
 		</div>
 	                
 

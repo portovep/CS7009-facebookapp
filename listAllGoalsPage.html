@@ -10,8 +10,7 @@
 {% block body %}
     <style type="text/css">
       body { padding-top: 60px; }
-        
-        </style>
+    </style>
 
         <div class="container">
             <div class="row">
@@ -41,7 +40,7 @@
 
             <form action='/goalViewer'>
             <tr>
-                <td> {{ goal.name }}
+                <td><b> {{ goal.name }}</b>
                 </td>
                 <td> {{ goal.description }}
                 </td>
@@ -69,11 +68,17 @@
         </thead> 
     </table>
 
+        <div class="row">
+            <div class="span10 offset1"><hr></div>
+        </div>
+
         <div class="container">
             <div class="row">
                 <div class="span12"><h1>Completed Goals!</h1></div>
             </div>
         </div>
+
+        <br/>
 
     <table class="table table-striped">
         <thead>  
@@ -93,7 +98,7 @@
 
             <form action='/goalViewer'>
             <tr>
-                <td> {{ goal.name }}
+                <td><b> {{ goal.name }} </b>
                 </td>
                 <td> {{ goal.description }}
                 </td>
@@ -119,8 +124,16 @@
         </thead> 
     </table>
 
+    <div class="row">
+           <div class="span10 offset1"><hr></div>
+    </div>
+
 
 <form action="/" type='post'>
-    <input class='btn' type="submit" value="Back to Main">
+        <div class="container">
+            <div class="row">
+                <div class="span3"><input class='btn btn-primary' type="submit" value="Back to Main"></div>
+            </div>
+        </div>
 </form>
 {% endblock %}
