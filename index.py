@@ -60,13 +60,14 @@ class BaseHandler(webapp.RequestHandler):
                 self._current_user = user
         return self._current_user
 
-class GoalHandler(webapp.RequestHandler):
+class GoalHandler(BaseHandler):
 
     def get(self):
         html_title = 'Create a new goal'
         goal_author = 'default_author'
         goal_name = self.request.get('goalName')
 
+        goal = None
         if goal_name:
             goal = Goal(parent=goal_key(goal_author))
 
@@ -85,18 +86,13 @@ class GoalHandler(webapp.RequestHandler):
             ## save new goal in DB    
             goal.put()
 
-            template_values = {
-                'html_title': html_title,
-                'goal': goal
-            }
+        template_values = {
+            'html_title': html_title,
+            'goal': goal,
+            'current_user' : self.current_user
+        }
 
-            self.response.out.write(template.render('newGoalPage.html', template_values))
-        else:
-            template_values = {
-            'html_title': html_title
-            }
-
-            self.response.out.write(template.render('newGoalPage.html', template_values))
+        self.response.out.write(template.render('newGoalPage.html', template_values))
 
 class GoalViewerHandler(webapp.RequestHandler):
 

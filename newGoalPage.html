@@ -18,10 +18,13 @@
 			$('#datePickerDL').datepicker();
 		});
 	</script>
+	
 	<script type="text/javascript">
 		
-		//TODO: Get Username and Image.
+		//TODO: Solve "FB.init has already been called - this could indicate a problem"
 		//TODO: Get a nice image to go on the right side.
+
+		FB.init({appId: "435215956532387", status: true, cookie: true});
 
 		function postToFeed() {
 
@@ -32,7 +35,8 @@
 			var goalTitle = document.getElementById('tbGoalName').value;
 			var goalDesc = document.getElementById('tbGoalDesc').value;
 			var goalDeadline = document.getElementById('datePickerDL').value;
-			var fbDescription = username + " wants to " + goalDesc + " by " + goalDeadline;
+			var fbDescription = username + " wants to " + goalTitle + " by " + goalDeadline;
+			var fbName = username + "has set a new goal";
 
 			switch (goalTypeSelect)
 			{
@@ -47,7 +51,29 @@
 				break;
 			} 
 
-			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture= " + pictureLink + "&name=" + username + "%20Has%20Set%20A%20New%20Goal&caption= " + goalType + "&description= " + fbDescription + "&redirect_uri=http://apps.facebook.com/improve-app";
+	        // calling the API ...
+	        var obj = {
+	          method: 'feed',
+	          redirect_uri: 'http://apps.facebook.com/improve-app/',
+	          link: 'https://developers.facebook.com/docs/reference/dialogs/',
+	          picture: 'http://fbrell.com/f8.jpg',
+	          name: fbName,
+	          caption: goalType,
+	          description: fbDescription
+	        };
+
+	        function callback(response) {
+	    	    if (response && response.post_id) {
+	     			alert('Post was published.');
+	    		} else {
+	      			alert('Post was not published.');
+	    		}
+	          	//document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
+	        }
+
+	        FB.ui(obj, callback);
+
+/*			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture= " + pictureLink + "&name=" +&caption= " + goalType + "&description= " + fbDescription + "&redirect_uri=http://apps.facebook.com/improve-app";*/
       }
 
 	</script>
@@ -93,59 +119,60 @@
 	<br>
 	<br>
 	{% endif %}
-		
-	<input type=hidden id="hdnUname">{% if current_user %} {{ current_user.name }} {% endif %}</input>
+
+	<input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
+
 	<form action="/newGoal" method="get" class="well">
 	        
-	<div class="container">
-		<div class="row">
-		<div class="span12">
-		<h1>Set A New Goal!</h1> 
-		</div>
-		</div>
-		<div class="row">
-			<div class="span2"><h4>This is a ... </h4></div>
-			<div class="span4"><fieldset>          
-        		<div class="control-group">
-        			<div class="controls">
-          			 <select id = "ddGoalType">
-               	 	 <option value="fitnessGoal">Fitness Goal</option>
-                	 <option value="academicGoal">Academic Goal</option>
-                	 <option value="lifeGoal">Life Goal</option>
-            		</select>
-        			</div>
-        		</div>
-   		 </fieldset></div>
-		</div>
-		<div class="row">
-			<div class="span2"><h4>Goal Title</h4></div>
-			<div class="span4"><input id="tbGoalName" name="goalName" class="text" type="text"/></div>
-		</div>
-		<div class="row">
-			<div class="span2"><h4>I Want To...</h4></div>
-			<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription"> </textarea></div>
-		</div>
-		<div class="row">
-			<div class="span2"><h4>I Want It By</h4></div>
-			<div class="span4"><input type="text" class="span2" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" ></input></div>
-		</div>
-		<div class="row">
-			<div class="span6"><hr></div>
-		</div>
-		<div class="row">
-			<div class="span4 offset1"><h4>Let All My Friends Know?</h4></div>
-		</div>
-		<div class="row">
-			<div class="span6"><br/></div>
-		</div>
-		
-		<div class="row">
-			<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="button" onclick="postToFeed()">Tell The World!</button></div>
-			<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="button">Private Goal</button></div>
-		</div>
-	                
+		<div class="container">
+			<div class="row">
+			<div class="span12">
+			<h1>Set A New Goal!</h1> 
+			</div>
+			</div>
+			<div class="row">
+				<div class="span2"><h4>This is a ... </h4></div>
+				<div class="span4"><fieldset>          
+	        		<div class="control-group">
+	        			<div class="controls">
+	          			 <select id = "ddGoalType">
+	               	 	 <option value="fitnessGoal">Fitness Goal</option>
+	                	 <option value="academicGoal">Academic Goal</option>
+	                	 <option value="lifeGoal">Life Goal</option>
+	            		</select>
+	        			</div>
+	        		</div>
+	   		 </fieldset></div>
+			</div>
+			<div class="row">
+				<div class="span2"><h4>Goal Title</h4></div>
+				<div class="span4"><input id="tbGoalName" name="goalName" class="text" type="text"/></div>
+			</div>
+			<div class="row">
+				<div class="span2"><h4>I Want To...</h4></div>
+				<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription"> </textarea></div>
+			</div>
+			<div class="row">
+				<div class="span2"><h4>I Want It By</h4></div>
+				<div class="span4"><input type="text" class="span2" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" ></input></div>
+			</div>
+			<div class="row">
+				<div class="span6"><hr></div>
+			</div>
+			<div class="row">
+				<div class="span4 offset1"><h4>Let All My Friends Know?</h4></div>
+			</div>
+			<div class="row">
+				<div class="span6"><br/></div>
+			</div>
+			
+			<div class="row">
+				<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postToFeed()">Tell The World!</button></div>
+				<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit">Private Goal</button></div>
+			</div>
+		                
 
-	</div>
+			</div>
 		</form>
 
 {% endblock %}
