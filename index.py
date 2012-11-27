@@ -64,11 +64,11 @@ class GoalHandler(BaseHandler):
 
     def get(self):
         html_title = 'Create a new goal'
-        goal_author = 'default_author'
         goal_name = self.request.get('goalName')
 
         goal = None
         if goal_name:
+            goal_author = self.current_user.id
             goal = Goal(parent=goal_key(goal_author))
 
             goal.name = goal_name
@@ -94,12 +94,12 @@ class GoalHandler(BaseHandler):
 
         self.response.out.write(template.render('newGoalPage.html', template_values))
 
-class GoalViewerHandler(webapp.RequestHandler):
+class GoalViewerHandler(BaseHandler):
 
     def get(self):
         html_title = 'View your goals'
 
-        goal_author = 'default_author'
+        goal_author = self.current_user.id
 
         action = self.request.get('action')
 
