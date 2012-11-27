@@ -25,7 +25,7 @@
 
 		function postToFeed() {
 
-			var username = "Placeholder";
+			var username = document.getElementById('hdnUname').value;
 			var goalTypeSelect = document.getElementById('ddGoalType').value;
 			var goalType = "";
 			var pictureLink = "Placeholder.jpg";
@@ -94,7 +94,7 @@
 	<br>
 	{% endif %}
 		
-
+	<input type=hidden id="hdnUname">{% if current_user %} {{ current_user.name }} {% endif %}</input>
 	<form action="/newGoal" method="get" class="well">
 	        
 	<div class="container">
