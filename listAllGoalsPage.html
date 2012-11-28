@@ -61,7 +61,8 @@
 
       }
 
-    <input type='hidden' id='tbUserID' name='fbUserID' />
+
+    <input type='hidden' id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
     <table class="table table-striped">
         <thead>  
           <tr>  
@@ -98,7 +99,6 @@
                 <td> <input class='btn btn-success' name='action' type="submit" value="Accomplished!" onclick="postSuccessToWall()"/>
                 </td>  
             </tr>
-            <input type='hidden' id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
             <input type='hidden' name='goalName' value='{{ goal.name }}'>
             </form>
 
