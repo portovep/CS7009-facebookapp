@@ -20,6 +20,47 @@
 
     <br/>
 
+      <script type="text/javascript">
+        
+        //TODO: Solve "FB.init has already been called - this could indicate a problem"
+        //TODO: Get a nice image to go on the right side.
+
+        FB.init({appId: "435215956532387", status: true, cookie: true});
+
+        function postSuccessToWall() {
+
+            var username = document.getElementById('hdnUname').value;
+            var pictureLink = "Placeholder.jpg";
+            var goalTitle = document.getElementById('tbGoalName').value;
+            var goalDesc = document.getElementById('tbGoalDesc').value;
+            var goalDeadline = document.getElementById('datePickerDL').value;
+            var fbDescription = username + " has accomplished " + goalTitle;
+            var fbName = username + "has accomplished one of their goals!";
+
+            // calling the API ...
+            var obj = {
+              method: 'feed',
+              redirect_uri: 'http://apps.facebook.com/improve-app/',
+              link: 'https://developers.facebook.com/docs/reference/dialogs/',
+              picture: 'http://fbrell.com/f8.jpg',
+              name: fbName,
+              caption: "Congratulations!",
+              description: fbDescription
+            };
+
+            function callback(response) {
+                if (response && response.post_id) {
+                    alert('Post was published.');
+                } else {
+                    alert('Post was not published.');
+                }
+                //document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
+            }
+
+            FB.ui(obj, callback);
+
+      }
+
     <input type='hidden' id='tbUserID' name='fbUserID' />
     <table class="table table-striped">
         <thead>  
@@ -54,10 +95,10 @@
                 </td>
                 <td> <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
                 </td>
-                <td> <input class='btn btn-success' name='action' type="submit" value="Check"/>
+                <td> <input class='btn btn-success' name='action' type="submit" value="Accomplished!" onclick="postSuccessToWall()"/>
                 </td>  
             </tr>
-
+            <input type='hidden' id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
             <input type='hidden' name='goalName' value='{{ goal.name }}'>
             </form>
 
