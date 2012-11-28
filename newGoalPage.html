@@ -16,6 +16,7 @@
 	<script type="text/javascript">
 		$(function(){
 			$('#datePickerDL').datepicker();
+			document.getElementById('datePickerDL').style.visibility="hidden";
 		});
 	</script>
 	
@@ -62,6 +63,25 @@
 
 /*			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture= " + pictureLink + "&name=" +&caption= " + goalType + "&description= " + fbDescription + "&redirect_uri=http://apps.facebook.com/improve-app";*/
       }
+
+      function changeDatePickerAv(){
+
+      	var selectValue = document.getElementById('cbEnableDeadline').checked;
+
+      	if (selectValue == true)
+      	{
+			document.getElementById('datePickerDL').style.visibility="visible";
+      	}
+      	else
+      	{
+			document.getElementById('datePickerDL').style.visibility="hidden";
+      	}
+
+
+      }
+
+
+
 
 	</script>
 
@@ -140,8 +160,8 @@
 				<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription"> </textarea></div>
 			</div>
 			<div class="row">
-				<div class="span2"><h4>I Want It By</h4></div>
-				<div class="span4"><input type="text" class="span2" name="goalDueDate" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" ></input></div>
+				<div class="span2"><h4>Set A Deadline?</h4></div>
+				<div class="span4"><input type="checkbox" name="cbEnableDeadline" id="cbEnableDeadline" onchange="changeDatePickerAv()">&nbsp;&nbsp;<input type="text" class="span2" name="goalDueDate" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" visible="false"></input></div>
 			</div>
 			<div class="row">
 				<div class="span6"><hr></div>
