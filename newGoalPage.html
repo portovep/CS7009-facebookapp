@@ -27,14 +27,25 @@
 
 		FB.init({appId: "435215956532387", status: true, cookie: true});
 
-		function postToFeed() {
+		function postToFeed(userSetPublic) {
+
+			var goalTitle = document.getElementById('tbGoalName').value;
+			var goalDesc = document.getElementById('tbGoalDesc').value;
+
+			if (goalTitle == "" || goalDesc == ""){
+
+				return;
+
+			}
+			else{
+
+			if (userSetPublic == "publicBtnClicked"){
 
 			var username = document.getElementById('hdnUname').value;
 			var goalTypeSelect = document.getElementById('ddGoalType').value;
 			var goalType = "";
 			var pictureLink = "Placeholder.jpg";
-			var goalTitle = document.getElementById('tbGoalName').value;
-			var goalDesc = document.getElementById('tbGoalDesc').value;
+
 			var goalDeadline = document.getElementById('datePickerDL').value;
 			var fbDescription = username + " wants to " + goalTitle + " by " + goalDeadline;
 			var fbName = username + "has set a new goal";
@@ -60,10 +71,11 @@
 	        }
 
 	        FB.ui(obj, callback);
-
-/*			window.location = "https://www.facebook.com/dialog/feed?app_id=435215956532387&link=http://apps.facebook.com/improve-app&picture= " + pictureLink + "&name=" +&caption= " + goalType + "&description= " + fbDescription + "&redirect_uri=http://apps.facebook.com/improve-app";*/
       }
+  }
+   
 
+	}
       function changeDatePickerAv(){
 
       	var selectValue = document.getElementById('cbEnableDeadline').checked;
@@ -77,10 +89,28 @@
 			document.getElementById('datePickerDL').style.visibility="hidden";
       	}
 
-
       }
 
+      function validateForm(){
 
+
+		var goalTitleVal=document.forms["newGoalForm"]["tbGoalName"].value;
+		var goalDescVal=document.forms["newGoalForm"]["tbGoalDesc"].value;
+
+		if (goalTitleVal==null || goalTitleVal=="")
+		  {
+		  	document.getElementById('tbGoalName').placeholder="Please enter a title";
+		  	document.getElementById("divRowTitle").className="control-group error";
+		  	return false;
+		  };
+
+		if(goalDescVal==null || goalDescVal==""){
+		  	document.getElementById('tbGoalDesc').placeholder="Please enter a description";
+		  	document.getElementById("divRowDesc").className="control-group error";
+		  	return false;
+		  };
+
+		}
 
 
 	</script>
@@ -90,8 +120,7 @@
 	New goal created
 
 	<table>
-	  <tr>
-	    
+	  <tr>	    
 	      <th>Name </th>
 	      <th>Category</th>
 	      <th>Description</th>
@@ -129,7 +158,7 @@
 
 	<input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
 
-	<form action="/newGoal" method="get" class="well">
+	<form action="/newGoal" id="newGoalForm" name="newGoalForm"  onsubmit="return validateForm()" method="get" class="well">
 	        
 		<div class="container">
 			<div class="row">
@@ -152,12 +181,17 @@
 	   		 </fieldset></div>
 			</div>
 			<div class="row">
+				<div class="control-group" id="divRowTitle">
+					<div class="controls">
 				<div class="span2"><h4>Goal Title</h4></div>
 				<div class="span4"><input id="tbGoalName" name="goalName" class="text" type="text"/></div>
+				</div></div>
 			</div>
 			<div class="row">
+				<div class="control-group" id="divRowDesc">
+					<div class="controls">
 				<div class="span2"><h4>I Want To...</h4></div>
-				<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription"> </textarea></div>
+				<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription"></textarea></div></div></div>
 			</div>
 			<div class="row">
 				<div class="span2"><h4>Set A Deadline?</h4></div>
@@ -174,8 +208,8 @@
 			</div>
 			
 			<div class="row">
-				<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postToFeed()">Tell The World!</button></div>
-				<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit">Private Goal</button></div>
+				<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postToFeed('publicBtnClicked')">Tell The World!</button></div>
+				<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit" onclick="postToFeed('privateBtnClicked')">Private Goal</button></div>
 			</div>
 		                
 
