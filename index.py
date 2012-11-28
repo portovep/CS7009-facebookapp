@@ -116,7 +116,7 @@ class GoalViewerHandler(BaseHandler):
             results = q.get()
             db.delete(results)
 
-        if action == 'Check':
+        if action == 'Accomplished!':
             goal_to_finish = self.request.get('goalName')
             goal_to_remove = self.request.get('goalName')
             q = db.GqlQuery("SELECT * FROM Goal WHERE name = :1", goal_to_finish)
