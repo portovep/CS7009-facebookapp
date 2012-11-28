@@ -66,9 +66,13 @@ class GoalHandler(BaseHandler):
         html_title = 'Create a new goal'
         goal_name = self.request.get('goalName')
 
+        if self.current_user:
+            goal_author = self.current_user.id
+        else:
+            goal_author = 'none'
+
         goal = None
         if goal_name:
-            goal_author = self.current_user.id
             goal = Goal(parent=goal_key(goal_author))
 
             goal.name = goal_name
@@ -99,7 +103,10 @@ class GoalViewerHandler(BaseHandler):
     def get(self):
         html_title = 'View your goals'
 
-        goal_author = self.current_user.id
+        if self.current_user:
+            goal_author = self.current_user.id
+        else:
+            goal_author = 'none'
 
         action = self.request.get('action')
 

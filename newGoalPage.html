@@ -38,19 +38,6 @@
 			var fbDescription = username + " wants to " + goalTitle + " by " + goalDeadline;
 			var fbName = username + "has set a new goal";
 
-			switch (goalTypeSelect)
-			{
-			case "fitnessGoal":
- 				goalType="A Fitness Goal";
-				break;
-			case "academicGoal":
-				goalType="An Academic Goal";
-				break;
-			case "lifeGoal":
-				goalType="A Life Goal";
-				break;
-			} 
-
 	        // calling the API ...
 	        var obj = {
 	          method: 'feed',
@@ -58,7 +45,7 @@
 	          link: 'https://developers.facebook.com/docs/reference/dialogs/',
 	          picture: 'http://fbrell.com/f8.jpg',
 	          name: fbName,
-	          caption: goalType,
+	          caption: goalTypeSelect,
 	          description: fbDescription
 	        };
 
@@ -135,10 +122,10 @@
 				<div class="span4"><fieldset>          
 	        		<div class="control-group">
 	        			<div class="controls">
-	          			 <select id = "ddGoalType">
-	               	 	 <option value="fitnessGoal">Fitness Goal</option>
-	                	 <option value="academicGoal">Academic Goal</option>
-	                	 <option value="lifeGoal">Life Goal</option>
+	          			 <select id = "ddGoalType" name = "goalType">
+	               	 	 <option value="Fitness Goal">Fitness Goal</option>
+	                	 <option value="Academic Goal">Academic Goal</option>
+	                	 <option value="Life Goal">Life Goal</option>
 	            		</select>
 	        			</div>
 	        		</div>
@@ -154,7 +141,7 @@
 			</div>
 			<div class="row">
 				<div class="span2"><h4>I Want It By</h4></div>
-				<div class="span4"><input type="text" class="span2" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" ></input></div>
+				<div class="span4"><input type="text" class="span2" name="goalDueDate" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" ></input></div>
 			</div>
 			<div class="row">
 				<div class="span6"><hr></div>

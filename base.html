@@ -28,6 +28,18 @@
           window.location.reload();
         });
 
+        FB.getLoginStatus(function(response) {
+          if (response.status === 'connected') {
+            // connected
+          } else if (response.status === 'not_authorized') {
+            // not_authorized
+            login();
+          } else {
+            // not_logged_in
+            login();
+          }
+       });
+
 
       };
 
@@ -42,7 +54,27 @@
          js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
          ref.parentNode.insertBefore(js, ref);
        }(document, /*debug*/ false));
-      
+
+
+      function login() {
+        FB.login(function(response) {
+            if (response.authResponse) {
+                // connected
+                testAPI()
+            } else {
+                // cancelled
+            }
+        });
+      }
+
+      function testAPI() {
+        alert('Welcome!  Fetching your information.... ');
+        FB.api('/me', function(response) {
+            alert('Good to see you, ' + response.name + '.');
+        });
+      }
+
+
     </script>
 
       <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
