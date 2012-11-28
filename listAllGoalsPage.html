@@ -20,11 +20,11 @@
 
         function postSuccessToWall() {
 
-            var username = document.getElementById('hdnUname').value;   //TODO: Username not picked up. Needs to be passed in with the template values.
+            var username = document.getElementById('hdnUname').value;   //TODO: test
             var pictureLink = "Placeholder.jpg";
-            //var goalTitle = document.getElementById('tbGoalName').value;   TODO: Get title and description of goal on line that was clicked...
-            var goalTitle = "Goal Title Placeholder";
-            var fbDescription = username + " has accomplished " + goalTitle;
+            var goalTitle =  document.getElementById('hdnGoalName').value;
+            var goalDesc = document.getElementById('hdnGoalDesc').value;
+            var fbDescription = username + " has accomplished " + goalTitle + " which was to " + goalDesc;
             var fbName = username + "has accomplished one of their goals!";
 
             // calling the API ...
@@ -53,7 +53,7 @@
     </script>   
 
 
-        <input type='hidden' id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/> 
+        <input type='hidden' id="hdnUname" value='{% if current_user %} {{ current_user.name }} {% endif %}'/> 
         <div class="container">
             <div class="row">
                 <div class="span12"><h1>Active Goals!</h1></div>
@@ -92,7 +92,8 @@
                 </td>
                 <td> {{ goal.created }}
                 </td>
-                <td> {{ goal.public }}
+                <td> {{ goal.public }} <input type='hidden' name="hdnGoalName" id="hdnGoalName" value='{{ goal.name }}' />
+                                       <input type='hidden' name="hdnGoalDesc" id="hdnGoalDesc" value='{{ goal.description }}' /> 
                 </td>
                 <td> <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
                 </td>
