@@ -141,7 +141,8 @@ class GoalViewerHandler(BaseHandler):
             'goals' : goals,
             'finishedGoals' : finishedGoals,
             'goalsNumber' : goals.count(),
-            'fGoalsNumber' : finishedGoals.count()
+            'fGoalsNumber' : finishedGoals.count(),
+            'current_user' : self.current_user
         }
 
         self.response.out.write(template.render('listAllGoalsPage.html', template_values))
