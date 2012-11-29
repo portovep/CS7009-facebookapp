@@ -187,5 +187,5 @@ def main():
                                          ('/goalViewer', GoalViewerHandler)],
                                          debug=True)
     run_wsgi_app(application)
-if __name__ is '__main__':
+if __name__ == '__main__':
     main()
