@@ -22,4 +22,28 @@
 
   <p><a class="btn btn-primary btn-large">More info</a></p>
   </div>
+
+  {% if friendGoals %}
+    {% for data in friendGoals.items %}
+    <div class="well">
+      <p>{{ data.0 }}</p>
+      {% for friendGoal in data.1 %}
+          <table class="table table-striped">
+            <tbody>
+             <tr>
+                  <td><b> {{ friendGoal.name }}</b>
+                  </td>
+                  <td> {{ friendGoal.description }}
+                  </td>
+                  <td> {{ friendGoal.category }}
+                  </td>
+                  <td> {{ friendGoal.dueDate }}
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  {% endif %}
 {% endblock %}

@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import facebook
+import logging
 
 from google.appengine.ext import webapp
 from google.appengine.ext import db
@@ -19,6 +20,7 @@ class User(db.Model):
     name = db.StringProperty(required=True)
     profile_url = db.StringProperty(required=True)
     access_token = db.StringProperty(required=True)
+    friends = db.StringListProperty()    
 
 class Goal(db.Model):
     """Models an individual Goal"""
@@ -53,6 +55,8 @@ class BaseHandler(webapp.RequestHandler):
                                 name=profile["name"],
                                 profile_url=profile["link"],
                                 access_token=cookie["access_token"])
+                    friendData = graph.get_connections("me", "friends")
+                    user.friends = [friend["id"] for friend in friendData["data"]]
                     user.put()
                 elif user.access_token != cookie["access_token"]:
                     user.access_token = cookie["access_token"]
@@ -145,20 +149,29 @@ class GoalViewerHandler(BaseHandler):
 class MainHandler(BaseHandler):
 
     def get(self):
-        html_title = 'Improve!'
-        template_values = {
-            'current_user' : self.current_user,
-            'facebook_app_id' : FACEBOOK_APP_ID,
-            'html_title': html_title
-        }
-        self.response.out.write(template.render('index.html', template_values))
+        self.post()
 
     def post(self):
         html_title = 'Improve!'
+
+        friendGoals = {}
+        if self.current_user:
+            for friendID in self.current_user.friends:
+                goalList = []
+                logging.error("friend id %s", friendID)
+                goals = Goal.all()
+                goals.ancestor(goal_key(friendID))
+                goals.filter("finished = ", False)
+                for goal in goals.run(limit=1):
+                    logging.error("Goal name %s", goal.name)
+                    goalList.append(goal)
+                friendGoals[friendID] = goalList
+
         template_values = {
             'current_user' : self.current_user,
             'facebook_app_id' : FACEBOOK_APP_ID,
-            'html_title': html_title
+            'html_title': html_title,
+            'friendGoals': friendGoals
         }
         self.response.out.write(template.render('index.html', template_values))  
 
