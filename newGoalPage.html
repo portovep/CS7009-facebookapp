@@ -135,47 +135,6 @@
 
 	</script>
 
-	{% if goal %}
-	 
-	New goal created
-
-	<table>
-	  <tr>	    
-	      <th>Name </th>
-	      <th>Category</th>
-	      <th>Description</th>
-	      <th>Due date</th>
-	      <th>Created</th>
-	      <th>Public</th>
-	    </tr>
-	<tr> 
-	<td>
-	{{goal.name}}
-	</td>
-	<td>
-	{{goal.category}}
-	</td>
-	<td>
-	{{goal.description}}
-	</td>
-	<td>
-	{% if goal.dueDate %}
-	{{goal.dueDate}}
-	{% endif %}
-	</td>
-	<td>
-	{{goal.created|date:"d.m.Y"}}
-	</td>
-	<td>
-	{{goal.public}}
-	</td>
-	</table>
-
-	<br>
-	<br>
-	<br>
-	{% endif %}
-
 	<input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
 
 	<form action="/newGoal" id="newGoalForm" name="newGoalForm"  onsubmit="return validateForm()" method="get" class="well">
