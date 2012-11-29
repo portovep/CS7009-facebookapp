@@ -158,15 +158,19 @@ class MainHandler(BaseHandler):
         friendGoals = {}
         if self.current_user:
             for friendID in self.current_user.friends:
-                goalList = []
-                logging.error("friend id %s", friendID)
-                goals = Goal.all()
-                goals.ancestor(goal_key(friendID))
-                goals.filter("finished = ", False)
-                for goal in goals.run(limit=1):
-                    logging.error("Goal name %s", goal.name)
-                    goalList.append(goal)
-                friendGoals[friendID] = goalList
+                # checking if the friend is using our app
+                user = User.get_by_key_name(friendID)
+                if user:
+                    goalList = []
+                    logging.error("friend id %s", friendID)
+                    goals = Goal.all()
+                    goals.ancestor(goal_key(friendID))
+                    # retrieving friend finished public goals
+                    goals.filter("public = ", True).filter("finished = ", False)
+                    for goal in goals.run(limit=2):
+                        logging.error("Goal name %s", goal.name)
+                        goalList.append(goal)
+                    friendGoals[user.name] = goalList
 
         template_values = {
             'current_user' : self.current_user,
