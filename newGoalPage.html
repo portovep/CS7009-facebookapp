@@ -29,6 +29,7 @@
 
 		function postToFeed(userSetPublic) {
 
+
 			var goalTitle = document.getElementById('tbGoalName').value;
 			var goalDesc = document.getElementById('tbGoalDesc').value;
 
@@ -41,21 +42,36 @@
 
 			if (userSetPublic == "publicBtnClicked"){
 
+
+			document.getElementById('userChosePublic').value = "public";
 			var username = document.getElementById('hdnUname').value;
 			var goalTypeSelect = document.getElementById('ddGoalType').value;
-			var goalType = "";
-			var pictureLink = "Placeholder.jpg";
+			var pictureLink = "urlplaceholder.com/"; //TODO: get host base URL
+
+			switch(goalTypeSelect){
+				case "Fitness Goal":
+				  pictureLink+="fitness.png";
+				  break;
+				case "Life Goal":
+				  pictureLink+="life.png";
+				  break;
+				case "Academic Goal":
+				  pictureLink+="academic.png";
+				  break;
+
+			}		
 
 			var goalDeadline = document.getElementById('datePickerDL').value;
 			var fbDescription = username + " wants to " + goalTitle + " by " + goalDeadline;
 			var fbName = username + "has set a new goal";
 
 	        // calling the API ...
+	        //TODO Change picture to pictureLink variable once image hosting works
 	        var obj = {
 	          method: 'feed',
 	          redirect_uri: 'http://apps.facebook.com/improve-app/',
 	          link: 'http://apps.facebook.com/improve-app/',
-	          picture: 'http://fbrell.com/f8.jpg',
+	          picture: 'http://fbrell.com/f8.jpg', 
 	          name: fbName,
 	          caption: goalTypeSelect,
 	          description: fbDescription
@@ -71,6 +87,10 @@
 	        }
 
 	        FB.ui(obj, callback);
+      }
+      else{
+      	//i.e user selected private
+      	document.getElementById('userChosePublic').value = "private";
       }
   }
    
@@ -211,7 +231,7 @@
 				<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postToFeed('publicBtnClicked')">Tell The World!</button></div>
 				<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit" onclick="postToFeed('privateBtnClicked')">Private Goal</button></div>
 			</div>
-		                
+		       <input type="hidden" id="userChosePublic" name="userChosePublic" value=""/>
 
 			</div>
 		</form>

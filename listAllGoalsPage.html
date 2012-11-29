@@ -25,7 +25,7 @@
             var goalTitle =  document.getElementById('hdnGoalName').value;
             var goalDesc = document.getElementById('hdnGoalDesc').value;
             var fbDescription = username + " has accomplished " + goalTitle + " which was to " + goalDesc;
-            var fbName = username + "has accomplished one of their goals!";
+            var fbName = username + " has accomplished one of their goals!";
 
             // calling the API ...
             var obj = {
@@ -53,7 +53,7 @@
     </script>   
 
 
-        <input type='hidden' id="hdnUname" value='{% if current_user %} {{ current_user.name }} {% endif %}'/> 
+        <input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/> 
         <div class="container">
             <div class="row">
                 <div class="span12"><h1>Active Goals!</h1></div>
