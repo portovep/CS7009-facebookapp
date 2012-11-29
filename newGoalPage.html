@@ -90,7 +90,7 @@
       }
       else{
       	//i.e user selected private
-      	document.getElementById('userChosePublic').value = "false";
+      	document.getElementById('userChosePublic').value = "private";
       }
   }
    
@@ -231,7 +231,7 @@
 				<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postToFeed('publicBtnClicked')">Tell The World!</button></div>
 				<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit" onclick="postToFeed('privateBtnClicked')">Private Goal</button></div>
 			</div>
-		       <input type="hidden" id="userChosePublic" name="userChosePublic" value="false"/>
+		       <input type="hidden" id="userChosePublic" name="goalPublic" value="private"/>
 
 			</div>
 		</form>
