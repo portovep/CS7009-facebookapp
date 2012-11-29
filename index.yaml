@@ -15,3 +15,16 @@ indexes:
   properties:
   - name: date
     direction: desc
+
+- kind: Goal
+  ancestor: yes
+  properties:
+  - name: finished
+  - name: created
+
+- kind: Goal
+  ancestor: yes
+  properties:
+  - name: finished
+  - name: created
+    direction: desc

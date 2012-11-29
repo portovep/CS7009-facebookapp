@@ -90,7 +90,7 @@
                 </td>
                 <td> {{ goal.dueDate }}
                 </td>
-                <td> {{ goal.created }}
+                <td> {{goal.created|date:"d/m/Y"}}
                 </td>
                 <td> {{ goal.public }} <input type='hidden' name="hdnGoalName" id="hdnGoalName" value='{{ goal.name }}' />
                                        <input type='hidden' name="hdnGoalDesc" id="hdnGoalDesc" value='{{ goal.description }}' /> 

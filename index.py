@@ -93,14 +93,15 @@ class GoalHandler(BaseHandler):
             goal.finished = False
             ## save new goal in DB    
             goal.put()
+            self.redirect("/goalViewer")
+        else:
+            template_values = {
+                'html_title': html_title,
+                'goal': goal,
+                'current_user' : self.current_user
+            }
 
-        template_values = {
-            'html_title': html_title,
-            'goal': goal,
-            'current_user' : self.current_user
-        }
-
-        self.response.out.write(template.render('newGoalPage.html', template_values))
+            self.response.out.write(template.render('newGoalPage.html', template_values))
 
 class GoalViewerHandler(BaseHandler):
 
@@ -131,6 +132,7 @@ class GoalViewerHandler(BaseHandler):
         goals = Goal.all()
         goals.ancestor(goal_key(goal_author))
         goals.filter("finished = ", False)
+        goals.order("-created")
 
         finishedGoals = Goal.all()
         finishedGoals.ancestor(goal_key(goal_author))
