@@ -18,6 +18,8 @@ class User(db.Model):
     created = db.DateTimeProperty(auto_now_add=True)
     updated = db.DateTimeProperty(auto_now=True)
     name = db.StringProperty(required=True)
+    firstName = db.StringProperty(required=True)
+    lastName = db.StringProperty(required=True)
     profile_url = db.StringProperty(required=True)
     access_token = db.StringProperty(required=True)
     friends = db.StringListProperty()    
@@ -53,6 +55,8 @@ class BaseHandler(webapp.RequestHandler):
                     user = User(key_name=str(profile["id"]),
                                 id=str(profile["id"]),
                                 name=profile["name"],
+                                firstName=profile["first_name"],
+                                lastName=profile["last_name"],
                                 profile_url=profile["link"],
                                 access_token=cookie["access_token"])
                     friendData = graph.get_connections("me", "friends")
