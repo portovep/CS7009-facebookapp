@@ -26,23 +26,31 @@
   {% if friendGoals %}
     {% for data in friendGoals.items %}
     <div class="well">
-      <p>{{ data.0 }}</p>
-      {% for friendGoal in data.1 %}
+      <p><b>{{ data.0 }}</b> goals:</p>
           <table class="table table-striped">
+            <thead>  
+              <tr>  
+                <th>Goal Name</th>  
+                <th>Goal Description</th>  
+                <th>Category</th>  
+                <th>Deadline</th>  
+              </tr>
+            </thead>
+            {% for friendGoal in data.1 %}
             <tbody>
              <tr>
-                  <td><b> {{ friendGoal.name }}</b>
-                  </td>
-                  <td> {{ friendGoal.description }}
-                  </td>
-                  <td> {{ friendGoal.category }}
-                  </td>
-                  <td> {{ friendGoal.dueDate }}
-                  </td>
+                <td><b> {{ friendGoal.name }}</b>
+                </td>
+                <td> {{ friendGoal.description }}
+                </td>
+                <td> {{ friendGoal.category }}
+                </td>
+                <td> {{ friendGoal.dueDate }}
+                </td>
               </tr>
             </tbody>
+            {% endfor %}
           </table>
-      {% endfor %}
     </div>
     {% endfor %}
   {% endif %}

@@ -172,7 +172,8 @@ class MainHandler(BaseHandler):
                     for goal in goals.run(limit=2):
                         logging.error("Goal name %s", goal.name)
                         goalList.append(goal)
-                    friendGoals[user.name] = goalList
+                    if len(goalList) > 0:
+                        friendGoals[user.name] = goalList
 
         template_values = {
             'current_user' : self.current_user,
