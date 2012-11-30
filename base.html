@@ -13,7 +13,7 @@
       <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">  
   </head>
-  <body background="bootstrap/img/bg.png">
+  <body background="bootstrap/img/bg.png" onload="checkCookie()">
 
     <script src='http://connect.facebook.net/en_US/all.js'></script>
     <div id="fb-root"></div>
@@ -73,6 +73,27 @@
             alert('Good to see you, ' + response.name + '.');
         });
       }
+
+      function checkCookie(){
+        var cookieEnabled=(navigator.cookieEnabled)? true : false   
+        if (typeof navigator.cookieEnabled=="undefined" && !cookieEnabled){ 
+            document.cookie="testcookie";
+            cookieEnabled=(document.cookie.indexOf("testcookie")!=-1)? true : false;
+        }
+        return (cookieEnabled)?true:showCookieFail();
+     }
+
+    function showCookieFail(){
+      
+        //i.e. page name not cookiesDisabledPage
+      if(document.URL.indexOf("cookiesDisabled") == -1){
+
+        console.log("cookies Disabled");
+        window.location = "cookiesDisabledPage.html";
+
+      }
+
+    }
 
 
     </script>
