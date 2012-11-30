@@ -131,6 +131,12 @@
 
 		}
 
+		function imposeMaxLength(Object, MaxLen)
+		{
+  			return (Object.value.length <= MaxLen);
+		}
+
+
 
 	</script>
 
@@ -162,14 +168,14 @@
 				<div class="control-group" id="divRowTitle">
 					<div class="controls">
 				<div class="span2"><h4>Goal Title</h4></div>
-				<div class="span4"><input id="tbGoalName" name="goalName" class="text" type="text"/></div>
+				<div class="span4"><input id="tbGoalName" name="goalName" class="text" maxlength="25" type="text"/></div>
 				</div></div>
 			</div>
 			<div class="row">
 				<div class="control-group" id="divRowDesc">
 					<div class="controls">
 				<div class="span2"><h4>I Want To...</h4></div>
-				<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription"></textarea></div></div></div>
+				<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription" onkeypress="return imposeMaxLength(this, 140);" ></textarea></div></div></div>
 			</div>
 			<div class="row">
 				<div class="span2"><h4>Set A Deadline?</h4></div>
