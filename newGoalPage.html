@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% block title %} Create a new goal {% endblock %}
 {% block nav %}
-            <li><a href="/">Home</a></li>
             <li class="active"><a href="#">New goal</a></li>
             <li><a href="goalViewer">Your goals</a></li>
-            <li><a href="#">Profile</a></li>
+            <li><a href="about">About</a></li>
 {% endblock %}
 
 {% block body %}
@@ -194,5 +193,37 @@
 
 			</div>
 		</form>
+
+  {% if friendGoals %}
+    {% for data in friendGoals.items %}
+    <div class="well">
+      <p><b>{{ data.0 }}</b> goals:</p>
+          <table class="table table-striped">
+            <thead>  
+              <tr>  
+                <th>Goal Name</th>  
+                <th>Goal Description</th>  
+                <th>Category</th>  
+                <th>Deadline</th>  
+              </tr>
+            </thead>
+            {% for friendGoal in data.1 %}
+            <tbody>
+             <tr>
+                <td><b> {{ friendGoal.name }}</b>
+                </td>
+                <td> {{ friendGoal.description }}
+                </td>
+                <td> {{ friendGoal.category }}
+                </td>
+                <td> {{ friendGoal.dueDate }}
+                </td>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+    </div>
+    {% endfor %}
+  {% endif %}
 
 {% endblock %}

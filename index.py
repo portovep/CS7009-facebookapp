@@ -64,45 +64,6 @@ class BaseHandler(webapp.RequestHandler):
                 self._current_user = user
         return self._current_user
 
-class GoalHandler(BaseHandler):
-
-    def get(self):
-        html_title = 'Create a new goal'
-        goal_name = self.request.get('goalName')
-
-        if self.current_user:
-            goal_author = self.current_user.id
-        else:
-            goal_author = 'none'
-
-        goal = None
-        if goal_name:
-            goal = Goal(parent=goal_key(goal_author))
-
-            goal.name = goal_name
-            goal.category = self.request.get('goalType')
-            goal.description = self.request.get('goalDescription')
-            dueDate = self.request.get('goalDueDate')
-            if dueDate:
-                goal.dueDate = dueDate
-            isPublic = self.request.get('goalPublic')
-            if isPublic == 'public':
-                goal.public = True
-            else:
-                goal.public = False
-            goal.finished = False
-            ## save new goal in DB    
-            goal.put()
-            self.redirect("/goalViewer")
-        else:
-            template_values = {
-                'html_title': html_title,
-                'goal': goal,
-                'current_user' : self.current_user
-            }
-
-            self.response.out.write(template.render('newGoalPage.html', template_values))
-
 class GoalViewerHandler(BaseHandler):
 
     def get(self):
@@ -149,45 +110,85 @@ class GoalViewerHandler(BaseHandler):
 
         self.response.out.write(template.render('listAllGoalsPage.html', template_values))
 
-class MainHandler(BaseHandler):
+class AboutHandler(BaseHandler):
+
+    def get(self):
+        html_title = 'About us'
+
+        template_values = {
+            'current_user' : self.current_user,
+            'html_title': html_title,
+        }
+        self.response.out.write(template.render('about.html', template_values))  
+
+
+class GoalHandler(BaseHandler):
 
     def get(self):
         self.post()
 
     def post(self):
-        html_title = 'Improve!'
+        html_title = 'Create a new goal'
+        goal_name = self.request.get('goalName')
 
-        friendGoals = {}
         if self.current_user:
-            for friendID in self.current_user.friends:
-                # checking if the friend is using our app
-                user = User.get_by_key_name(friendID)
-                if user:
-                    goalList = []
-                    logging.error("friend id %s", friendID)
-                    goals = Goal.all()
-                    goals.ancestor(goal_key(friendID))
-                    # retrieving friend finished public goals
-                    goals.filter("public = ", True).filter("finished = ", False)
-                    for goal in goals.run(limit=2):
-                        logging.error("Goal name %s", goal.name)
-                        goalList.append(goal)
-                    if len(goalList) > 0:
-                        friendGoals[user.name] = goalList
+            goal_author = self.current_user.id
+        else:
+            goal_author = 'none'
 
-        template_values = {
-            'current_user' : self.current_user,
-            'facebook_app_id' : FACEBOOK_APP_ID,
-            'html_title': html_title,
-            'friendGoals': friendGoals
-        }
-        self.response.out.write(template.render('index.html', template_values))  
+        goal = None
+        if goal_name:
+            goal = Goal(parent=goal_key(goal_author))
+
+            goal.name = goal_name
+            goal.category = self.request.get('goalType')
+            goal.description = self.request.get('goalDescription')
+            dueDate = self.request.get('goalDueDate')
+            if dueDate:
+                goal.dueDate = dueDate
+            isPublic = self.request.get('goalPublic')
+            if isPublic == 'public':
+                goal.public = True
+            else:
+                goal.public = False
+            goal.finished = False
+            ## save new goal in DB    
+            goal.put()
+            self.redirect("/goalViewer")
+        else:
+            friendGoals = {}
+            if self.current_user:
+                for friendID in self.current_user.friends:
+                    # checking if the friend is using our app
+                    user = User.get_by_key_name(friendID)
+                    if user:
+                        goalList = []
+                        logging.error("friend id %s", friendID)
+                        goals = Goal.all()
+                        goals.ancestor(goal_key(friendID))
+                        # retrieving friend finished public goals
+                        goals.filter("public = ", True).filter("finished = ", False)
+                        for goal in goals.run(limit=2):
+                            logging.error("Goal name %s", goal.name)
+                            goalList.append(goal)
+                        if len(goalList) > 0:
+                            friendGoals[user.name] = goalList
+
+            template_values = {
+                'html_title': html_title,
+                'facebook_app_id' : FACEBOOK_APP_ID,
+                'goal': goal,
+                'current_user' : self.current_user,
+                'friendGoals': friendGoals
+            }
+
+            self.response.out.write(template.render('newGoalPage.html', template_values))
 
 def main():
     application = webapp.WSGIApplication(
-                                         [('/', MainHandler),
-                                         ('/newGoal', GoalHandler),
-                                         ('/goalViewer', GoalViewerHandler)],
+                                         [('/', GoalHandler),
+                                         ('/goalViewer', GoalViewerHandler),
+                                         ('/about', AboutHandler)],
                                          debug=True)
     run_wsgi_app(application)
 if __name__ == '__main__':
