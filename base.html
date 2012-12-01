@@ -68,9 +68,9 @@
       }
 
       function testAPI() {
-        alert('Welcome!  Fetching your information.... ');
+        //alert('Welcome!  Fetching your information.... ');
         FB.api('/me', function(response) {
-            alert('Good to see you, ' + response.name + '.');
+          //  alert('Good to see you, ' + response.name + '.');
         });
       }
 
@@ -87,8 +87,7 @@
       
         //i.e. page name not cookiesDisabledPage
       if(document.URL.indexOf("cookiesDisabled") == -1){
-
-        console.log("cookies Disabled");
+        
         window.location = "cookiesDisabledPage.html";
 
       }

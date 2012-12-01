@@ -7,6 +7,18 @@
 {% endblock %}	
 {% block body %}
 	<div class="hero-unit">
+
+    <script type="text/javascript">
+
+    function gotoFBPage(){
+
+      var webURL = "temp.com";
+      window.location = webURL;
+
+    }
+
+    </script>
+
   <h1>Welcome to Improve {% if current_user %} {{ current_user.firstName }} {% endif %} !</h1>
   <br>
   <p>
@@ -19,10 +31,10 @@
   </div>
 
   <p>
-    We apreciate your feedback, so if you have a cool feature in mind let us know it on our Facebook page!
+    We appreciate your feedback, so if you have a cool feature in mind let us know it on our Facebook page!
   </p>
 
-  <p><a class="btn btn-primary btn-large">Visit our page</a></p>
+  <p><a class="btn btn-primary btn-large" onclick="gotoFBPage()">Visit our page</a></p>
   </div>
 
 {% endblock %}

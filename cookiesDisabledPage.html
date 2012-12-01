@@ -1,27 +1,39 @@
-{% extends "base.html" %}
-{% block title %} Create a new goal {% endblock %}
-{% block nav %}
-            <li><a href="/">Home</a></li>
-            <li class="active"><a href="#">New goal</a></li>
-            <li><a href="goalViewer">Your goals</a></li>
-            <li><a href="#">Profile</a></li>
-{% endblock %}
 
-{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>
+       Improve! 
+      </title>
+      <meta name="description" content="Facebook app">
+      <meta name="author" content="None">
+      <!—[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]—>
+      <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+      <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">  
+  </head>
+  <body background="bootstrap/img/bg.png" >
+
     <style type="text/css">
       body { padding-top: 60px; }
     </style>
 
-    <script type="text/javascript">
-		
-		//TODO: Solve "FB.init has already been called - this could indicate a problem"
-		//TODO: Get a nice image to go on the right side.
-
-		FB.init({appId: "435215956532387", status: true, cookie: true});
-
-	</script>
-
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <h1>Your Browser Does Not Support Cookies</h1> 
+                </div>
+            </div>
+            <div class="row">
+              <div class="span6 offset1">
+                <h3>Please enable cookies in your browser to use this application.</h3>
+              </div>
+            </div>
+        </div>
     
 
 
-{% endblock %}
+    </body>
