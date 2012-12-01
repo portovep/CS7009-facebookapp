@@ -20,7 +20,7 @@
         function postSuccessToWall() {
 
             var username = document.getElementById('hdnUname').value;   //TODO: test
-            var pictureLink = "Placeholder.jpg";
+            var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/trophy.png";
             var goalTitle =  document.getElementById('hdnGoalName').value;
             var goalDesc = document.getElementById('hdnGoalDesc').value;
             var fbDescription = username + " has accomplished " + goalTitle + " which was to " + goalDesc;
@@ -31,7 +31,7 @@
               method: 'feed',
               redirect_uri: 'https://apps.facebook.com/improve-app/goalViewer',
               link: 'http://apps.facebook.com/improve-app',
-              picture: 'http://fbrell.com/f8.jpg',
+              picture: pictureLink,
               name: fbName,
               caption: 'Congratulations!',
               description: fbDescription
