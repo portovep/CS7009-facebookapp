@@ -121,10 +121,19 @@ class AboutHandler(BaseHandler):
 
         template_values = {
             'current_user' : self.current_user,
-            'html_title': html_title,
+            'html_title': html_title
         }
-        self.response.out.write(template.render('about.html', template_values))  
+        self.response.out.write(template.render('about.html', template_values))
 
+class CookieErrorHandler(BaseHandler):
+
+    def get(self):
+        html_title = 'Cookies disabled'
+
+        template_values = {
+            'html_title': html_title
+        }
+        self.response.out.write(template.render('cookiesDisabledPage.html', template_values)) 
 
 class GoalHandler(BaseHandler):
 
@@ -167,13 +176,11 @@ class GoalHandler(BaseHandler):
                     user = User.get_by_key_name(friendID)
                     if user:
                         goalList = []
-                        logging.error("friend id %s", friendID)
                         goals = Goal.all()
                         goals.ancestor(goal_key(friendID))
                         # retrieving friend finished public goals
                         goals.filter("public = ", True).filter("finished = ", False)
                         for goal in goals.run(limit=2):
-                            logging.error("Goal name %s", goal.name)
                             goalList.append(goal)
                         if len(goalList) > 0:
                             friendGoals[user.name] = goalList
@@ -192,8 +199,9 @@ def main():
     application = webapp.WSGIApplication(
                                          [('/', GoalHandler),
                                          ('/goalViewer', GoalViewerHandler),
-                                         ('/about', AboutHandler)],
-                                         debug=True)
+                                         ('/about', AboutHandler),
+                                         ('/cookiesDisabled', CookieErrorHandler)],
+                                         debug=False)
     run_wsgi_app(application)
 if __name__ == '__main__':
     main()

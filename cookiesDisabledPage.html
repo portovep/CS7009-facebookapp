@@ -1,39 +1,29 @@
 
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-      <meta charset="utf-8">
-      <title>
-       Improve! 
-      </title>
-      <meta name="description" content="Facebook app">
-      <meta name="author" content="None">
-      <!—[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-      <![endif]—>
-      <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-      <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">  
-  </head>
-  <body background="bootstrap/img/bg.png" >
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block nav %}
+          <li><a href="/">New goal</a></li>
+          <li><a href="goalViewer">Your goals</a></li>
+          <li><a href="#">About</a></li>
+{% endblock %}  
+{% block body %}
 
-    <style type="text/css">
-      body { padding-top: 60px; }
-    </style>
+  <div class="hero-unit">
+    <h1>
+      Your Browser Does Not Support Cookies
+    </h1>
+    <br>
+    <h2>
+      Please enable cookies in your browser to use this application.
+    </h2>
+    <br>
+    <p>
+      Info on how to enable cookies in different browsers:
+    </p>
+    <a class="btn btn-primary btn-large" href="http://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences"> Firefox </a>
+    <a class="btn btn-primary btn-large"  href="http://support.google.com/websearch/bin/answer.py?hl=en&answer=35851">Chrome</a>
+    <a class="btn btn-primary btn-large" href="http://support.microsoft.com/kb/196955">Internet Explorer</a>
 
-        <div class="container">
-            <div class="row">
-                <div class="span12">
-                    <h1>Your Browser Does Not Support Cookies</h1> 
-                </div>
-            </div>
-            <div class="row">
-              <div class="span6 offset1">
-                <h3>Please enable cookies in your browser to use this application.</h3>
-              </div>
-            </div>
-        </div>
-    
-
-
-    </body>
+  </div>
+{% endblock %}  
