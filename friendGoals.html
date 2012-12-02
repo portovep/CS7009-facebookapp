@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block nav %}
+	        <li><a href="/">New goal</a></li>
+	        <li><a href="goalViewer">Your goals</a></li>
+          <li class="active"><a href="#">Friends</a></li>
+          <li><a href="about">About</a></li>
+{% endblock %}	
+{% block body %}
+<div class="hero-unit">
+  <div class="row">
+ <h1> Friend goals </h1>
+  {% if friendGoals %}
+      <div class="span5">
+      <div class="row">
+    {% for data in friendGoals.items %}
+    <div class="well">
+      <p><b>{{ data.0 }}</b> goals:</p>
+          <table class="table table-striped" style="table-layout: fixed; width: 100%;">
+            <thead>  
+              <tr>  
+                <th>Goal Name</th>  
+                <th>Goal Description</th> 
+                <th>Deadline</th>  
+              </tr>
+            </thead>
+            {% for friendGoal in data.1 %}
+            <tbody>
+             <tr>
+                <td style="word-wrap: break-word"><b> {{ friendGoal.name }}</b>
+                </td>
+                <td style="word-wrap: break-word"> {{ friendGoal.description }}
+                </td>
+                <td style="word-wrap: break-word"> {{ friendGoal.dueDate }}
+                </td>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+    </div>
+    {% endfor %}
+        </div>
+    </div>
+  </div>
+   {% else %}
+    <p> Your friends don't have published any public goal yet. </p>
+  </div>
+   {% endif %}
+
+ </div>
+
+{% endblock %}
