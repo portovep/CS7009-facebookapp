@@ -9,14 +9,15 @@
 {% block body %}
 <div class="hero-unit">
   <div class="row">
- <h1> My Friend's Goals </h1>
+ <h1> My Friends' Goals </h1>
  <br/>
   {% if friendGoals %}
-      <div class="span5 offset1">
+
+      <div class="span6">
       <div class="row">
       {% for data in friendGoals.items %}
         <div class="well">
-          <p><b>{{ data.0 }}'s</b> goals:</p>
+          <img src='http://graph.facebook.com/{{data.id}}/picture?type=large'><p><b>{{ data.0 }}'s</b> goals:</p>
             <table class="table table-striped" style="table-layout: fixed; width: 100%;">
               <thead>  
                 <tr>  
