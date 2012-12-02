@@ -203,17 +203,16 @@
 		</div>
 
 	{% if friendGoals %}
-    	<div class="span4 offset1">
+    	<div class="span5">
 			<div class="row">
     {% for data in friendGoals.items %}
     <div class="well">
       <p><b>{{ data.0 }}</b> goals:</p>
-          <table class="table table-striped" style="table-layout: fixed; width: 100%">
+          <table class="table table-striped" style="table-layout: fixed; width: 100%;">
             <thead>  
               <tr>  
                 <th>Goal Name</th>  
-                <th>Goal Description</th>  
-                <th>Category</th>  
+                <th>Goal Description</th> 
                 <th>Deadline</th>  
               </tr>
             </thead>
@@ -223,8 +222,6 @@
                 <td style="word-wrap: break-word"><b> {{ friendGoal.name }}</b>
                 </td>
                 <td style="word-wrap: break-word"> {{ friendGoal.description }}
-                </td>
-                <td style="word-wrap: break-word"> {{ friendGoal.category }}
                 </td>
                 <td style="word-wrap: break-word"> {{ friendGoal.dueDate }}
                 </td>
