@@ -142,18 +142,19 @@
 
 	<input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
 
-	<form action="/" id="newGoalForm" name="newGoalForm"  onsubmit="return validateForm()" method="get" class="well">
-	        
-		<div class="container">
+	       
+		<div class="container-fluid">
 			<div class="row">
 			<div class="span12">
 			<h1>Set A New Goal!</h1> 
 			</div>
 			</div>
-			<div class="span6">
+			<div class="row">
+			<div class="span7">
+			<form action="/" id="newGoalForm" name="newGoalForm"  onsubmit="return validateForm()" method="get" class="well">
 			<div class="row">
 				<div class="span2"><h4>This is a ... </h4></div>
-				<div class="span4"><fieldset>          
+				<div class="span2"><fieldset>          
 	        		<div class="control-group">
 	        			<div class="controls">
 	          			 <select id = "ddGoalType" name = "goalType">
@@ -169,27 +170,27 @@
 				<div class="control-group" id="divRowTitle">
 					<div class="controls">
 				<div class="span2"><h4>Goal Title</h4></div>
-				<div class="span4"><input id="tbGoalName" name="goalName" class="text" maxlength="25" type="text"/></div>
+				<div class="span2"><input id="tbGoalName" name="goalName" class="text" maxlength="25" type="text"/></div>
 				</div></div>
 			</div>
 			<div class="row">
 				<div class="control-group" id="divRowDesc">
 					<div class="controls">
 				<div class="span2"><h4>I Want To...</h4></div>
-				<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription" onkeypress="return imposeMaxLength(this, 140);" ></textarea></div></div></div>
+				<div class="span2"><textarea rows="3" id="tbGoalDesc" name="goalDescription" onkeypress="return imposeMaxLength(this, 140);" ></textarea></div></div></div>
 			</div>
 			<div class="row">
-				<div class="span2"><h4>Set A Deadline?</h4></div>
-				<div class="span4"><input type="checkbox" name="cbEnableDeadline" id="cbEnableDeadline" onchange="changeDatePickerAv()">&nbsp;&nbsp;<input type="text" class="span2" name="goalDueDate" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" visible="false"></input></div>
+				<div class="span2"><h4>Set An End?</h4></div>
+				<div class="span1"><input type="checkbox" name="cbEnableDeadline" id="cbEnableDeadline" onchange="changeDatePickerAv()">&nbsp;&nbsp;<input type="text" class="span2" name="goalDueDate" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" visible="false"></input></div>
 			</div>
 			<div class="row">
-				<div class="span6"><hr></div>
+				<div class="span3"><hr></div>
 			</div>
 			<div class="row">
 				<div class="span4 offset1"><h4>Let All My Friends Know?</h4></div>
 			</div>
 			<div class="row">
-				<div class="span6"><br/></div>
+				<div class="span5"><br/></div>
 			</div>
 			
 			<div class="row">
@@ -197,18 +198,17 @@
 				<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit" onclick="postToFeed('privateBtnClicked')">Private Goal</button></div>
 			</div>
 		       <input type="hidden" id="userChosePublic" name="goalPublic" value="private"/>
-			</div>
 			
-		</form>
+			</form>
+		</div>
 
-
-  {% if friendGoals %}
+	{% if friendGoals %}
     	<div class="span4 offset1">
 			<div class="row">
     {% for data in friendGoals.items %}
     <div class="well">
       <p><b>{{ data.0 }}</b> goals:</p>
-          <table class="table table-striped">
+          <table class="table table-striped" style="table-layout: fixed; width: 100%">
             <thead>  
               <tr>  
                 <th>Goal Name</th>  
@@ -220,13 +220,13 @@
             {% for friendGoal in data.1 %}
             <tbody>
              <tr>
-                <td><b> {{ friendGoal.name }}</b>
+                <td style="word-wrap: break-word"><b> {{ friendGoal.name }}</b>
                 </td>
-                <td> {{ friendGoal.description }}
+                <td style="word-wrap: break-word"> {{ friendGoal.description }}
                 </td>
-                <td> {{ friendGoal.category }}
+                <td style="word-wrap: break-word"> {{ friendGoal.category }}
                 </td>
-                <td> {{ friendGoal.dueDate }}
+                <td style="word-wrap: break-word"> {{ friendGoal.dueDate }}
                 </td>
               </tr>
             </tbody>
