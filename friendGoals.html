@@ -9,21 +9,22 @@
 {% block body %}
 <div class="hero-unit">
   <div class="row">
- <h1> Friend goals </h1>
+ <h1> My Friend's Goals </h1>
+ <br/>
   {% if friendGoals %}
-      <div class="span5">
+      <div class="span5 offset1">
       <div class="row">
-    {% for data in friendGoals.items %}
-    <div class="well">
-      <p><b>{{ data.0 }}</b> goals:</p>
-          <table class="table table-striped" style="table-layout: fixed; width: 100%;">
-            <thead>  
-              <tr>  
-                <th>Goal Name</th>  
-                <th>Goal Description</th> 
-                <th>Deadline</th>  
-              </tr>
-            </thead>
+      {% for data in friendGoals.items %}
+        <div class="well">
+          <p><b>{{ data.0 }}'s</b> goals:</p>
+            <table class="table table-striped" style="table-layout: fixed; width: 100%;">
+              <thead>  
+                <tr>  
+                  <th>Goal Name</th>  
+                  <th>Goal Description</th> 
+                  <th>Deadline</th>  
+                </tr>
+              </thead>
             {% for friendGoal in data.1 %}
             <tbody>
              <tr>
@@ -43,7 +44,8 @@
     </div>
   </div>
    {% else %}
-    <p> Your friends don't have published any public goal yet. </p>
+   <br/>
+    <p> Your friends haven't published any public goals yet. </p>
   </div>
    {% endif %}
 
