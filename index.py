@@ -133,7 +133,7 @@ class FriendsHandler(BaseHandler):
                     for goal in goals.run(limit=2):
                         goalList.append(goal)
                     if len(goalList) > 0:
-                        friendGoals[user.name] = goalList
+                        friendGoals[user] = goalList
 
         template_values = {
             'current_user' : self.current_user,

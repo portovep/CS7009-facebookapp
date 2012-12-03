@@ -17,7 +17,7 @@
       <div class="row">
       {% for data in friendGoals.items %}
         <div class="well">
-          <img src='http://graph.facebook.com/{{data.id}}/picture?type=large'><p><b>{{ data.0 }}'s</b> goals:</p>
+          <img src='http://graph.facebook.com/{{data.0.id}}/picture?type=large' /><p><b>{{ data.0.name }}'s</b> goals:</p>
             <table class="table table-striped" style="table-layout: fixed; width: 100%;">
               <thead>  
                 <tr>  
