@@ -1,4 +1,4 @@
-application: improve-facebookapp
+application: improve-facebookapp-test
 version: 2
 runtime: python
 api_version: 1
