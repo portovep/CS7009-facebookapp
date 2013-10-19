@@ -1,9 +1,9 @@
 Improve
 =======
 
-A simple Facebook app that leverage the information provided by the Facebook Graph API to help people to achieve their goals. The app was created from the idea that sharing goals raises people motivation.
+A simple Facebook app that leverages the information provided by the Facebook Graph API to help people to achieve their goals. The app was created from the idea that sharing goals raises people motivation.
 
-The project aimed to potentiate the virality and stickiness of the app by using a development cycle based on continuous feedback implementation.
+The project aimed to potentiate the virality and stickiness of the app by using a development cycle based on the continuous implementation of the received feedback.
 
 Technologies
 ------------
@@ -18,6 +18,7 @@ If you want to contribute to this project don't be afraid to fork it and send me
 This was an academic project (you know, Deadline-driven development and too much caffeine) so the code can be ugly and there are a lot of ideas that we coul not implement. Here are some of that improvements & ideas that could be cool see implemented.
 
 - [ ] Allow the user to associate a picture with each goal.
-- [ ] Migrate to Bootstrap 3 for more responsiveness magic
+- [ ] Migrate to Bootstrap 3 for more responsiveness magic.
 - [ ] Allow fb friends to say "he/she will complete the goal or not".
 - [ ] Migrate to jQuery to increase cross-browser compatibility.
+- [ ] Promote the app between your friends on fb (easy picking).
