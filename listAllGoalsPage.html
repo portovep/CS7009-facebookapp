@@ -20,7 +20,7 @@
 
         function postSuccessToWall() {
 
-            var username = document.getElementById('hdnUname').value;   //TODO: test
+            var username = document.getElementById('hdnUname').value;
             var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/trophy.png";
             var goalTitle =  document.getElementById('hdnGoalName').value;
             var goalDesc = document.getElementById('hdnGoalDesc').value;
@@ -35,6 +35,39 @@
               picture: pictureLink,
               name: fbName,
               caption: 'Congratulations!',
+              description: fbDescription
+            };
+
+            function callback(response) {
+                if (response && response.post_id) {
+                   // alert('Post was published.');
+                } else {
+                 //   alert('Post was not published.');
+                }
+                //document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
+            }
+
+            FB.ui(obj, callback);
+
+      }
+
+              function postUpdateToWall() {
+
+            var username = document.getElementById('hdnUname').value;
+            var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/logo.png";
+            var goalTitle =  document.getElementById('hdnGoalName').value;
+            var goalDesc = document.getElementById('hdnGoalDesc').value;
+            var fbDescription = username + " wants to tell you about " + goalTitle + " which was to " + goalDesc;
+            var fbName = username + " has an update on one of their goals!";
+
+            // calling the API ...
+            var obj = {
+              method: 'feed',
+              redirect_uri: 'https://apps.facebook.com/improve-app/goalViewer',
+              link: 'http://apps.facebook.com/improve-app',
+              picture: pictureLink,
+              name: fbName,
+              caption: 'Improve!',
               description: fbDescription
             };
 
@@ -73,7 +106,8 @@
             <th>Deadline</th>
             <th>Created</th>
             <th>Public</th> 
-            <th>Remove?</th> 
+            <th>Remove?</th>
+            <th>Post Update?</th>  
             <th>Finished?</th>     
           </tr>
         </thead>    
@@ -100,6 +134,8 @@
                 </td>
                 <td> <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
                 </td>
+                <td> <input class='btn btn-primary' name='action' type="submit" value="Post an Update" onclick="postUpdateToWall()"/>
+                </td>  
                 <td> <input class='btn btn-success' name='action' type="submit" value="Accomplished!" onclick="postSuccessToWall()"/>
                 </td>  
             </tr>

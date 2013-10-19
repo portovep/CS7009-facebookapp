@@ -105,6 +105,7 @@ class GoalViewerHandler(BaseHandler):
 
         template_values = {
             'html_title': html_title,
+            'facebook_app_id' : FACEBOOK_APP_ID,
             'goals' : goals,
             'finishedGoals' : finishedGoals,
             'goalsNumber' : goals.count(),
@@ -137,6 +138,7 @@ class FriendsHandler(BaseHandler):
 
         template_values = {
             'current_user' : self.current_user,
+            'facebook_app_id' : FACEBOOK_APP_ID,
             'html_title': html_title,
             'friendGoals': friendGoals
         }
@@ -150,6 +152,7 @@ class AboutHandler(BaseHandler):
 
         template_values = {
             'current_user' : self.current_user,
+            'facebook_app_id' : FACEBOOK_APP_ID,
             'html_title': html_title
         }
         self.response.out.write(template.render('about.html', template_values))
@@ -160,6 +163,7 @@ class CookieErrorHandler(BaseHandler):
         html_title = 'Cookies disabled'
 
         template_values = {
+            'facebook_app_id' : FACEBOOK_APP_ID,
             'html_title': html_title
         }
         self.response.out.write(template.render('cookiesDisabledPage.html', template_values)) 
@@ -196,33 +200,32 @@ class GoalHandler(BaseHandler):
             goal.finished = False
             ## save new goal in DB    
             goal.put()
-            self.redirect("/goalViewer")
-        else:
-            friendGoals = {}
-            if self.current_user:
-                for friendID in self.current_user.friends:
-                    # checking if the friend is using our app
-                    user = User.get_by_key_name(friendID)
-                    if user:
-                        goalList = []
-                        goals = Goal.all()
-                        goals.ancestor(goal_key(friendID))
-                        # retrieving friend finished public goals
-                        goals.filter("public = ", True).filter("finished = ", False)
-                        for goal in goals.run(limit=2):
-                            goalList.append(goal)
-                        if len(goalList) > 0:
-                            friendGoals[user.name] = goalList
+ 
+        friendGoals = {}
+        if self.current_user:
+            for friendID in self.current_user.friends:
+                # checking if the friend is using our app
+                user = User.get_by_key_name(friendID)
+                if user:
+                    goalList = []
+                    goals = Goal.all()
+                    goals.ancestor(goal_key(friendID))
+                    # retrieving friend finished public goals
+                    goals.filter("public = ", True).filter("finished = ", False)
+                    for friendGoal in goals.run(limit=2):
+                        goalList.append(friendGoal)
+                    if len(goalList) > 0:
+                        friendGoals[user.name] = goalList
 
-            template_values = {
-                'html_title': html_title,
-                'facebook_app_id' : FACEBOOK_APP_ID,
-                'goal': goal,
-                'current_user' : self.current_user,
-                'friendGoals': friendGoals
-            }
+        template_values = {
+            'html_title': html_title,
+            'facebook_app_id' : FACEBOOK_APP_ID,
+            'goal': goal,
+            'current_user' : self.current_user,
+            'friendGoals': friendGoals
+        }
 
-            self.response.out.write(template.render('newGoalPage.html', template_values))
+        self.response.out.write(template.render('newGoalPage.html', template_values))
 
 def main():
     application = webapp.WSGIApplication(
@@ -231,7 +234,7 @@ def main():
                                          ('/friends', FriendsHandler),
                                          ('/about', AboutHandler),
                                          ('/cookiesDisabled', CookieErrorHandler)],
-                                         debug=False)
+                                         debug=True)
     run_wsgi_app(application)
 if __name__ == '__main__':
     main()

@@ -144,13 +144,13 @@
 	<input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
 
 	<form action="/" id="newGoalForm" name="newGoalForm"  onsubmit="return validateForm()" method="get" class="well">
+
 	        
 		<div class="container">
-			<div class="row">
-			<div class="span12">
+ 			<div class="row">
+			<div class="span6">
 			<h1>Set A New Goal!</h1> 
-			</div>
-			</div>
+
 			<div class="row">
 				<div class="span2"><h4>This is a ... </h4></div>
 				<div class="span4"><fieldset>          
@@ -169,7 +169,7 @@
 				<div class="control-group" id="divRowTitle">
 					<div class="controls">
 				<div class="span2"><h4>Goal Title</h4></div>
-				<div class="span4"><input id="tbGoalName" name="goalName" class="text" maxlength="25" type="text"/></div>
+				<div class="span4"><input id="tbGoalName" name="goalName" class="text" maxlength="40" type="text"/></div>
 				</div></div>
 			</div>
 			<div class="row">
@@ -199,6 +199,20 @@
 		       <input type="hidden" id="userChosePublic" name="goalPublic" value="private"/>
 
 			</div>
+			<div class="span6">
+				
+					{% if goal %}
+					<div class="hero-unit">
+					<h2> A new goal has been added to the list! </h2>
+					<p> <b>Name:</b> {{goal.name}} <p/>
+					    <a class="btn btn-primary btn-large" href="goalViewer">
+      					See your goal list
+    					</a>
+					</div>		
+					{% endif %}
+			</div>
+		 </div>
+
 		</form>
 
   </div>
