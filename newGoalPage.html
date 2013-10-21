@@ -1,52 +1,138 @@
 {% extends "base.html" %}
 {% block title %} Create a new goal {% endblock %}
 {% block nav %}
-            <li class="active"><a href="#">New goal</a></li>
-            <li><a href="goalViewer">Your goals</a></li>
-            <li><a href="friends">Friends</a></li>
-            <li><a href="about">About</a></li>
+	<li class="active"><a href="#">New goal</a></li>
+	<li><a href="goalViewer">Your goals</a></li>
+	<li><a href="friends">Friends</a></li>
+	<li><a href="about">About</a></li>
 {% endblock %}
 
 {% block body %}
-    <style type="text/css">
-      body { padding-top: 60px; }
-    </style>
+<input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
 
-	<script src="bootstrap/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript">
-		$(function(){
-			$('#datePickerDL').datepicker();
-			document.getElementById('datePickerDL').style.visibility="hidden";
-		});
-	</script>
-	
-	<script type="text/javascript">
+<form action="/" id="newGoalForm" name="newGoalForm"  onsubmit="return validateForm()" method="get" class="well">
+   
+	<div class="container">
+		<div class="row">
 		
-		//TODO: Solve "FB.init has already been called - this could indicate a problem"
-		//TODO: Get a nice image to go on the right side.
+		<div class="span6">
+		<h1>Set A New Goal!</h1> 
+		<div class="row">
+			<div class="span2"><h4>This is a ... </h4></div>
+			<div class="span4">
+				<fieldset>          
+        	<div class="control-group">
+       		<div class="controls">
+	   			 <select id = "ddGoalType" name = "goalType">
+	       	 	 <option value="Fitness Goal">Fitness Goal</option>
+	        	 <option value="Academic Goal">Academic Goal</option>
+	        	 <option value="Life Goal">Life Goal</option>
+            </select>
+        	</div>
+        	</div>
+   		  </fieldset>
+   		</div>
+		</div>
 
-		FB.init({appId: "435215956532387", status: true, cookie: true});
+		<div class="row">
+			<div class="control-group" id="divRowTitle">
+			<div class="controls">
+			<div class="span2">
+				
+				<h4>Goal Title</h4></div>
+				<div class="span4">
+					<input id="tbGoalName" name="goalName" class="text" maxlength="40" type="text"/>
+				</div>
+			
+			</div>
+			</div>
+		</div>
 
-		function postToFeed(userSetPublic) {
+		<div class="row">
+			<div class="control-group" id="divRowDesc">
+			<div class="controls">
+			<div class="span2">
+				<h4>I Want To...</h4>
+			</div>
+			
+			<div class="span4">
+				<textarea rows="3" id="tbGoalDesc" name="goalDescription" onkeypress="return imposeMaxLength(this, 140);" ></textarea>
+			</div>
 
+			</div>
+			</div>
+		</div>
 
-			var goalTitle = document.getElementById('tbGoalName').value;
-			var goalDesc = document.getElementById('tbGoalDesc').value;
+		<div class="row">
+			<div class="span2">
+			<h4>Set A Deadline?</h4>
+			</div>
+			<div class="span4">
+				<input type="checkbox" name="cbEnableDeadline" id="cbEnableDeadline" onchange="changeDatePickerAv()">&nbsp;&nbsp;
+				<input type="text" class="span2" name="goalDueDate" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" visible="false"></input>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span6"><hr></div>
+		</div>
+		
+		<div class="row">
+			<div class="span4 offset1"><h4>Let All My Friends Know?</h4></div>
+		</div>
+		
+		<div class="row">
+			<div class="span6"><br/></div>
+		</div>
+		
+		<div class="row">
+			<div class="span3">
+				<button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postToFeed('publicBtnClicked')">Tell The World!</button>
+			</div>
+			<div class="span3">
+				<button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit" onclick="postToFeed('privateBtnClicked')">Private Goal</button></div>
+		</div>
+	       <input type="hidden" id="userChosePublic" name="goalPublic" value="private"/>
 
-			if (goalTitle == "" || goalDesc == ""){
+		</div>
+		<div class="span6">
+				{% if goal %}
+				<div class="hero-unit">
+				<h2> A new goal has been added to the list! </h2>
+				<p> <b>Name:</b> {{goal.name}} <p/>
+				    <a class="btn btn-primary btn-large" href="goalViewer">
+    					See your goal list
+  					</a>
+				</div>		
+				{% endif %}
+		</div>
+	</div>
 
-				return;
+</form>
 
-			}
-			else{
+{% endblock %}
+{% block scripts %}
+<script src="bootstrap/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
 
-			if (userSetPublic == "publicBtnClicked"){
+	$(function(){
+		$('#datePickerDL').datepicker();
+		document.getElementById('datePickerDL').style.visibility="hidden";
+	});
 
+	function postToFeed(userSetPublic) {
+		var goalTitle = document.getElementById('tbGoalName').value;
+		var goalDesc = document.getElementById('tbGoalDesc').value;
 
+		if (goalTitle == "" || goalDesc == "") {
+			return;
+		}
+
+		if (userSetPublic == "publicBtnClicked") {
 			document.getElementById('userChosePublic').value = "public";
 			var username = document.getElementById('hdnUname').value;
 			var goalTypeSelect = document.getElementById('ddGoalType').value;
-			var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/"; //TODO: get host base URL
+			var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/"; 
 
 			switch(goalTypeSelect){
 				case "Fitness Goal":
@@ -65,156 +151,61 @@
 			var fbDescription = username + " wants to " + goalTitle + " by " + goalDeadline;
 			var fbName = username + "has set a new goal";
 
-	        // calling the API ...
-	        //TODO Change picture to pictureLink variable once image hosting works
-	        var obj = {
-	          method: 'feed',
-	          redirect_uri: 'http://apps.facebook.com/improve-app/',
-	          link: 'http://apps.facebook.com/improve-app/',
-	          picture: pictureLink, 
-	          name: fbName,
-	          caption: goalTypeSelect,
-	          description: fbDescription
-	        };
+	    // calling the API ...
+      //TODO Change picture to pictureLink variable once image hosting works
+      var obj = {
+        method: 'feed',
+        redirect_uri: 'http://apps.facebook.com/improve-app/',
+        link: 'http://apps.facebook.com/improve-app/',
+        picture: pictureLink, 
+        name: fbName,
+        caption: goalTypeSelect,
+        description: fbDescription
+      };
 
-	        function callback(response) {
-	    	    if (response && response.post_id) {
-	     			//alert('Post was published.');
-	    		} else {
-	      			//alert('Post was not published.');
-	    		}
-	          	//document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
-	       }
+      function callback(response) {
+  	    if (response && response.post_id)
+   				console.log('Post was published.');
+  			else
+    			console.log('Post was not published.');
+  		}
 
-	        FB.ui(obj, callback);
-      }
-      else{
-      	//i.e user selected private
-      	document.getElementById('userChosePublic').value = "private";
-      }
+	    FB.ui(obj, callback);
+     }
+     else {
+      // user selected private
+      document.getElementById('userChosePublic').value = "private";
+     }
   }
-   
-
-	}
-      function changeDatePickerAv(){
-
-      	var selectValue = document.getElementById('cbEnableDeadline').checked;
-
-      	if (selectValue == true)
-      	{
+  
+  function changeDatePickerAv(){
+    var selectValue = document.getElementById('cbEnableDeadline').checked;
+    if (selectValue == true)
 			document.getElementById('datePickerDL').style.visibility="visible";
-      	}
-      	else
-      	{
+    else
 			document.getElementById('datePickerDL').style.visibility="hidden";
-      	}
+  }
 
-      }
-
-      function validateForm(){
-
-
+  function validateForm() {
 		var goalTitleVal=document.forms["newGoalForm"]["tbGoalName"].value;
 		var goalDescVal=document.forms["newGoalForm"]["tbGoalDesc"].value;
 
-		if (goalTitleVal==null || goalTitleVal=="")
-		  {
-		  	document.getElementById('tbGoalName').placeholder="Please enter a title";
-		  	document.getElementById("divRowTitle").className="control-group error";
-		  	return false;
-		  };
+		if (goalTitleVal==null || goalTitleVal=="") {
+	  	document.getElementById('tbGoalName').placeholder="Please enter a title";
+	  	document.getElementById("divRowTitle").className="control-group error";
+	  	return false;
+		}
 
 		if(goalDescVal==null || goalDescVal==""){
-		  	document.getElementById('tbGoalDesc').placeholder="Please enter a description";
-		  	document.getElementById("divRowDesc").className="control-group error";
-		  	return false;
-		  };
-
+	  	document.getElementById('tbGoalDesc').placeholder="Please enter a description";
+	  	document.getElementById("divRowDesc").className="control-group error";
+	  	return false;
 		}
+	}
 
-		function imposeMaxLength(Object, MaxLen)
-		{
-  			return (Object.value.length <= MaxLen);
-		}
-
-
-
-	</script>
-
-	<input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
-
-	<form action="/" id="newGoalForm" name="newGoalForm"  onsubmit="return validateForm()" method="get" class="well">
-
-	        
-		<div class="container">
- 			<div class="row">
-			<div class="span6">
-			<h1>Set A New Goal!</h1> 
-
-			<div class="row">
-				<div class="span2"><h4>This is a ... </h4></div>
-				<div class="span4"><fieldset>          
-	        		<div class="control-group">
-	        			<div class="controls">
-	          			 <select id = "ddGoalType" name = "goalType">
-	               	 	 <option value="Fitness Goal">Fitness Goal</option>
-	                	 <option value="Academic Goal">Academic Goal</option>
-	                	 <option value="Life Goal">Life Goal</option>
-	            		</select>
-	        			</div>
-	        		</div>
-	   		 </fieldset></div>
-			</div>
-			<div class="row">
-				<div class="control-group" id="divRowTitle">
-					<div class="controls">
-				<div class="span2"><h4>Goal Title</h4></div>
-				<div class="span4"><input id="tbGoalName" name="goalName" class="text" maxlength="40" type="text"/></div>
-				</div></div>
-			</div>
-			<div class="row">
-				<div class="control-group" id="divRowDesc">
-					<div class="controls">
-				<div class="span2"><h4>I Want To...</h4></div>
-				<div class="span4"><textarea rows="3" id="tbGoalDesc" name="goalDescription" onkeypress="return imposeMaxLength(this, 140);" ></textarea></div></div></div>
-			</div>
-			<div class="row">
-				<div class="span2"><h4>Set A Deadline?</h4></div>
-				<div class="span4"><input type="checkbox" name="cbEnableDeadline" id="cbEnableDeadline" onchange="changeDatePickerAv()">&nbsp;&nbsp;<input type="text" class="span2" name="goalDueDate" value="17/12/12" data-date-format="dd/mm/yy" id="datePickerDL" visible="false"></input></div>
-			</div>
-			<div class="row">
-				<div class="span6"><hr></div>
-			</div>
-			<div class="row">
-				<div class="span4 offset1"><h4>Let All My Friends Know?</h4></div>
-			</div>
-			<div class="row">
-				<div class="span6"><br/></div>
-			</div>
-			
-			<div class="row">
-				<div class="span3"><button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postToFeed('publicBtnClicked')">Tell The World!</button></div>
-				<div class="span3"><button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit" onclick="postToFeed('privateBtnClicked')">Private Goal</button></div>
-			</div>
-		       <input type="hidden" id="userChosePublic" name="goalPublic" value="private"/>
-
-			</div>
-			<div class="span6">
-				
-					{% if goal %}
-					<div class="hero-unit">
-					<h2> A new goal has been added to the list! </h2>
-					<p> <b>Name:</b> {{goal.name}} <p/>
-					    <a class="btn btn-primary btn-large" href="goalViewer">
-      					See your goal list
-    					</a>
-					</div>		
-					{% endif %}
-			</div>
-		 </div>
-
-		</form>
-
-  </div>
+	function imposeMaxLength(Object, MaxLen) {			
+		return (Object.value.length <= MaxLen);
+	}
+</script>
 
 {% endblock %}

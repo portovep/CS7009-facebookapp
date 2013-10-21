@@ -5,5 +5,7 @@ api_version: 1
 handlers:
 - url: /bootstrap
   static_dir: bootstrap
+- url: /js
+  static_dir: js  
 - url: /.*
   script: index.py
