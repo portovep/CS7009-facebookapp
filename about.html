@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Welcome{% endblock %}
+
 {% block nav %}
-	        <li><a href="/">New goal</a></li>
-	        <li><a href="goalViewer">Your goals</a></li>
-          <li><a href="friends">Friends</a></li>
-          <li class="active"><a href="#">About</a></li>
+  <li><a href="/">New goal</a></li>
+  <li><a href="goalViewer">Your goals</a></li>
+  <li><a href="friends">Friends</a></li>
+  <li class="active"><a href="#">About</a></li>
 {% endblock %}	
 {% block body %}
-	<div class="hero-unit">
+<div class="hero-unit">
     
-  <h1>Welcome to Improve {% if current_user %} {{ current_user.firstName }} {% endif %} !</h1>
+  <h1>Welcome to Improve {% if current_user %} {{ current_user.firstName }} {% endif %}!</h1>
   <br>
   <p>
     Improve! helps you to achieve your goals and challenge yourself. Your friends can support you to complete your challenges<br>
@@ -17,7 +18,9 @@
   </p>
   
   <div class="row">
-      <div class="span10 offset1"><hr></div>
+    <div class="span10 offset1">
+      <hr>
+    </div>
   </div>
 
   <p>
@@ -25,8 +28,7 @@
   </p>
 
   <p><a class="btn btn-primary btn-large" href="https://www.facebook.com/improve1" target="_blank">Visit our facebook page</a></p>
-  </div>
+</div>
 
-
- <span style="font-size:small">Fitness icon created by <a href="http://sportsbettingspot.com/">sportsbettingspot</a></span>
+<span style="font-size:small">Fitness icon created by <a href="http://sportsbettingspot.com/">sportsbettingspot</a></span>
 {% endblock %}
