@@ -1,217 +1,191 @@
 {% extends "base.html" %}
 {% block title %} Your goals {% endblock %}
+
 {% block nav %}
-    <li><a href="/">New goal</a></li>
-    <li class="active"><a href="#">Your goals</a></li>
-    <li><a href="friends">Friends</a></li>
-    <li><a href="about">About</a></li>
+  <li><a href="/">New goal</a></li>
+  <li class="active"><a href="#">Your goals</a></li>
+  <li><a href="friends">Friends</a></li>
+  <li><a href="about">About</a></li>
 {% endblock %}
 
 {% block body %}
-    <style type="text/css">
-      body { padding-top: 60px; }
-    </style>
 
-    <script type="text/javascript">
-        
-        //TODO: Solve "FB.init has already been called - this could indicate a problem"
+<input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/> 
 
-        FB.init({appId: "435215956532387", status: true, cookie: true});
-
-        function postSuccessToWall() {
-
-            var username = document.getElementById('hdnUname').value;
-            var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/trophy.png";
-            var goalTitle =  document.getElementById('hdnGoalName').value;
-            var goalDesc = document.getElementById('hdnGoalDesc').value;
-            var fbDescription = username + " has accomplished " + goalTitle + " which was to " + goalDesc;
-            var fbName = username + " has accomplished one of their goals!";
-
-            // calling the API ...
-            var obj = {
-              method: 'feed',
-              redirect_uri: 'https://apps.facebook.com/improve-app/goalViewer',
-              link: 'http://apps.facebook.com/improve-app',
-              picture: pictureLink,
-              name: fbName,
-              caption: 'Congratulations!',
-              description: fbDescription
-            };
-
-            function callback(response) {
-                if (response && response.post_id) {
-                   // alert('Post was published.');
-                } else {
-                 //   alert('Post was not published.');
-                }
-                //document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
-            }
-
-            FB.ui(obj, callback);
-
-      }
-
-              function postUpdateToWall() {
-
-            var username = document.getElementById('hdnUname').value;
-            var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/logo.png";
-            var goalTitle =  document.getElementById('hdnGoalName').value;
-            var goalDesc = document.getElementById('hdnGoalDesc').value;
-            var fbDescription = username + " wants to tell you about " + goalTitle + " which was to " + goalDesc;
-            var fbName = username + " has an update on one of their goals!";
-
-            // calling the API ...
-            var obj = {
-              method: 'feed',
-              redirect_uri: 'https://apps.facebook.com/improve-app/goalViewer',
-              link: 'http://apps.facebook.com/improve-app',
-              picture: pictureLink,
-              name: fbName,
-              caption: 'Improve!',
-              description: fbDescription
-            };
-
-            function callback(response) {
-                if (response && response.post_id) {
-                   // alert('Post was published.');
-                } else {
-                 //   alert('Post was not published.');
-                }
-                //document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
-            }
-
-            FB.ui(obj, callback);
-
-      }
-
-    </script>   
-
-
-        <input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/> 
-        <div class="container">
-            <div class="row">
-                <div class="span12"><h1>Active Goals!</h1></div>
-            </div>
-        </div>
-
-    <br/>
-
-   
-    <table class="table table-striped" style="table-layout: fixed; width: 100%">
-        <thead>  
-          <tr>  
-            <th>Goal Name</th>  
-            <th>Goal Description</th>  
-            <th>Category</th>  
-            <th>Deadline</th>
-            <th>Created</th>
-            <th>Public</th> 
-            <th>Remove?</th>
-            <th>Post Update?</th>  
-            <th>Finished?</th>     
-          </tr>
-        </thead>    
-        <tbody>
-          {% if goalsNumber%}
-
-            {% for goal in goals %}
-
-            <form action='/goalViewer'>
-            <tr>
-                <td style="word-wrap: break-word" ><b> {{ goal.name }}</b>
-                </td>
-                <td style="word-wrap: break-word" > 
-                   {{ goal.description }}
-                </td>
-                <td> {{ goal.category }}
-                </td>
-                <td> {{ goal.dueDate }}
-                </td>
-                <td> {{goal.created|date:"d/m/Y"}}
-                </td>
-                <td> {{ goal.public }} <input type='hidden' name="hdnGoalName" id="hdnGoalName" value='{{ goal.name }}' />
-                                       <input type='hidden' name="hdnGoalDesc" id="hdnGoalDesc" value='{{ goal.description }}' /> 
-                </td>
-                <td> <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
-                </td>
-                <td> <input class='btn btn-primary' name='action' type="submit" value="Post an Update" onclick="postUpdateToWall()"/>
-                </td>  
-                <td> <input class='btn btn-success' name='action' type="submit" value="Accomplished!" onclick="postSuccessToWall()"/>
-                </td>  
-            </tr>
-            <input type='hidden' name='goalName' value='{{ goal.name }}'>
-            </form>
-
-            {% endfor %}
-        {%endif%} 
-        </tbody>
-    </table>
-
-        <div class="row">
-            <div class="span10 offset1"><hr></div>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="span12"><h1>Completed Goals!</h1></div>
-            </div>
-        </div>
-
-        <br/>
-
-    <table class="table table-striped" tyle="table-layout: fixed; width: 100%">
-        <thead>  
-          <tr>  
-            <th>Goal Name</th>  
-            <th>Goal Description</th>  
-            <th>Category</th>  
-            <th>Deadline</th>
-            <th>Created</th>
-            <th>Public</th> 
-            <th>Remove?</th>    
-          </tr>
-        </thead>    
-        <tbody>
-          {% if fGoalsNumber %}
-
-            {% for goal in finishedGoals %}
-
-            <form action='/goalViewer'>
-            <tr>
-                <td style="word-wrap: break-word" ><b> {{ goal.name }} </b>
-                </td>
-                <td style="word-wrap: break-word" >  {{ goal.description }}
-                </td>
-                <td> {{ goal.category }}
-                </td>
-                <td> {{ goal.dueDate }}
-                </td>
-                <td> {{goal.created|date:"d/m/Y"}}
-                </td>
-                <td> {{ goal.public }}
-                </td>
-                <td> <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
-                </td>
-            </tr>
-
-            <input type='hidden' name='goalName' value='{{ goal.name }}'>
-            </form>
-
-            {% endfor %}
-        {%endif%} 
-        </tbody>
-    </table>
-
+<div class="container">
     <div class="row">
-           <div class="span10 offset1"><hr></div>
+        <div class="span12"><h1>Active Goals!</h1></div>
     </div>
+</div>
+
+<br/>
+<table class="table table-striped" style="table-layout: fixed; width: 100%">
+  <thead>  
+    <tr>  
+      <th>Goal Name</th>  
+      <th>Goal Description</th>  
+      <th>Category</th>  
+      <th>Deadline</th>
+      <th>Created</th>
+      <th>Public</th> 
+      <th>Remove?</th>
+      <th>Post Update?</th>  
+      <th>Finished?</th>     
+    </tr>
+  </thead>    
+  <tbody>
+  {% if goalsNumber%}
+    {% for goal in goals %}
+    <form action='/goalViewer'>
+    <tr>
+        <td style="word-wrap: break-word" ><b> {{ goal.name }}</b>
+        </td>
+        <td style="word-wrap: break-word" > 
+           {{ goal.description }}
+        </td>
+        <td> {{ goal.category }} </td>
+        <td> {{ goal.dueDate }} </td>
+        <td> {{goal.created|date:"d/m/Y"}} </td>
+        <td> {{ goal.public }} 
+        <input type='hidden' name="hdnGoalName" id="hdnGoalName" value='{{ goal.name }}' />
+        <input type='hidden' name="hdnGoalDesc" id="hdnGoalDesc" value='{{ goal.description }}' /> 
+        </td>
+        <td>
+          <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
+        </td>
+        <td> 
+          <input class='btn btn-primary' name='action' type="submit" value="Post an Update" onclick="postUpdateToWall()"/>
+        </td>  
+        <td> 
+          <input class='btn btn-success' name='action' type="submit" value="Accomplished!" onclick="postSuccessToWall()"/>
+        </td>  
+    </tr>
+    <input type='hidden' name='goalName' value='{{ goal.name }}'>
+    </form>
+
+    {% endfor %}
+  {%endif%} 
+  </tbody>
+</table>
+
+<div class="row">
+    <div class="span10 offset1"><hr></div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="span12"><h1>Completed Goals!</h1></div>
+    </div>
+</div>
+<br/>
+
+<table class="table table-striped" tyle="table-layout: fixed; width: 100%">
+    <thead>  
+      <tr>  
+        <th>Goal Name</th>  
+        <th>Goal Description</th>  
+        <th>Category</th>  
+        <th>Deadline</th>
+        <th>Created</th>
+        <th>Public</th> 
+        <th>Remove?</th>    
+      </tr>
+    </thead>    
+    <tbody>
+    {% if fGoalsNumber %}
+      {% for goal in finishedGoals %}
+        <form action='/goalViewer'>
+        <tr>
+            <td style="word-wrap: break-word" >
+              <b> {{ goal.name }} </b>
+            </td>
+            <td style="word-wrap: break-word" >  
+              {{ goal.description }}
+            </td>
+            <td> {{ goal.category }} </td>
+            <td> {{ goal.dueDate }} </td>
+            <td> {{goal.created|date:"d/m/Y"}} </td>
+            <td> {{ goal.public }} </td>
+            <td> 
+              <input class='btn btn-warning' name='action' type="submit" value="Remove"/>
+            </td>
+        </tr>
+        <input type='hidden' name='goalName' value='{{ goal.name }}'>
+        </form>
+        {% endfor %}
+    {%endif%} 
+    </tbody>
+</table>
+
+<div class="row">
+       <div class="span10 offset1"><hr></div>
+</div>
 
 
 <form action="/" type='post'>
-        <div class="container">
-            <div class="row">
-                <div class="span3"><input class='btn btn-primary' type="submit" value="Back to Main"></div>
-            </div>
+  <div class="container">
+    <div class="row">
+        <div class="span3">
+          <input class='btn btn-primary' type="submit" value="Back to Main">
         </div>
+    </div>
+  </div>
 </form>
 {% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+
+function on_post_callback(response) {
+  if (response && response.post_id) {
+    console.log('Post was published.');
+  } else {
+    console.log('Post was not published.');
+  }
+}
+
+function postSuccessToWall() {
+  var username = document.getElementById('hdnUname').value;
+  var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/trophy.png";
+  var goalTitle =  document.getElementById('hdnGoalName').value;
+  var goalDesc = document.getElementById('hdnGoalDesc').value;
+  var fbDescription = username + " has accomplished " + goalTitle + " which was to " + goalDesc;
+  var fbName = username + " has accomplished one of their goals!";
+
+  // calling the API ...
+  var obj = {
+    method: 'feed',
+    redirect_uri: 'https://apps.facebook.com/improve-app/goalViewer',
+    link: 'http://apps.facebook.com/improve-app',
+    picture: pictureLink,
+    name: fbName,
+    caption: 'Congratulations!',
+    description: fbDescription
+  };
+
+  FB.ui(obj, on_post_callback);
+}
+
+function postUpdateToWall() {
+  var username = document.getElementById('hdnUname').value;
+  var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/logo.png";
+  var goalTitle =  document.getElementById('hdnGoalName').value;
+  var goalDesc = document.getElementById('hdnGoalDesc').value;
+  var fbDescription = username + " wants to tell you about " + goalTitle + " which was to " + goalDesc;
+  var fbName = username + " has an update on one of their goals!";
+
+  // calling the API ...
+  var obj = {
+    method: 'feed',
+    redirect_uri: 'https://apps.facebook.com/improve-app/goalViewer',
+    link: 'http://apps.facebook.com/improve-app',
+    picture: pictureLink,
+    name: fbName,
+    caption: 'Improve!',
+    description: fbDescription
+  };
+
+  FB.ui(obj, on_post_callback);
+
+}
+</script> 
+{% endblock %}  
