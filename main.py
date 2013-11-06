@@ -227,14 +227,10 @@ class GoalHandler(BaseHandler):
 
         self.response.out.write(template.render('templates/newGoal.html', template_values))
 
-def main():
-    application = webapp.WSGIApplication(
-                                         [('/', GoalHandler),
-                                         ('/goalViewer', GoalViewerHandler),
-                                         ('/friends', FriendsHandler),
-                                         ('/about', AboutHandler),
-                                         ('/cookiesDisabled', CookieErrorHandler)],
-                                         debug=True)
-    run_wsgi_app(application)
-if __name__ == '__main__':
-    main()
+app = webapp.WSGIApplication(
+                 [('/', GoalHandler),
+                 ('/goalViewer', GoalViewerHandler),
+                 ('/friends', FriendsHandler),
+                 ('/about', AboutHandler),
+                 ('/cookiesDisabled', CookieErrorHandler)],
+                 debug=True)
