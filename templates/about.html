@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+
+{% block nav %}
+  <li><a href="/">New goal</a></li>
+  <li><a href="goalViewer">Your goals</a></li>
+  <li><a href="friends">Friends</a></li>
+  <li class="active"><a href="#">About</a></li>
+{% endblock %}	
+{% block body %}
+<div class="hero-unit">
+    
+  <h1>Welcome to Improve {% if current_user %} {{ current_user.firstName }} {% endif %}!</h1>
+  <br>
+  <p>
+    Improve! helps you to achieve your goals and challenge yourself. Your friends can support you to complete your challenges<br>
+    Even more! You can challenge your friends! Improve and help the others to do the same!
+  </p>
+  
+  <div class="row">
+    <div class="span10 offset1">
+      <hr>
+    </div>
+  </div>
+
+  <p>
+    We appreciate your feedback, so if you have a cool feature in mind let us know it on our Facebook page!
+  </p>
+
+  <p><a class="btn btn-primary btn-large" href="https://www.facebook.com/improve1" target="_blank">Visit our facebook page</a></p>
+</div>
+
+<span style="font-size:small">Fitness icon created by <a href="http://sportsbettingspot.com/">sportsbettingspot</a></span>
+{% endblock %}
