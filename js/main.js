@@ -1,22 +1,4 @@
 
-
-function login() {
-  FB.login(function(response) {
-      if (response.authResponse) {
-          // connected
-          testAPI()
-      } else {
-          // cancelled
-      }
-  });
-}
-
-function testAPI() {
-  FB.api('/me', function(response) {
-    console.log('Good to see you, ' + response.name + '.');
-  });
-}
-
 function checkCookie(){
   // create a cookie and to check if browser has cookies enabled
   document.cookie="testcookie";
@@ -30,4 +12,21 @@ function showCookieFail(){
   if(document.URL.indexOf("cookiesDisabled") == -1)
     window.location = "cookiesDisabled";
 
+}
+
+function validateNewGoalForm() {
+  var goalTitleVal=document.forms["newGoalForm"]["tbGoalName"].value;
+  var goalDescVal=document.forms["newGoalForm"]["tbGoalDesc"].value;
+
+  if (goalTitleVal==null || goalTitleVal=="") {
+    document.getElementById('tbGoalName').placeholder="Please enter a title";
+    document.getElementById("divRowTitle").className="control-group error";
+    return false;
+  }
+
+  if(goalDescVal==null || goalDescVal==""){
+    document.getElementById('tbGoalDesc').placeholder="Please enter a description";
+    document.getElementById("divRowDesc").className="control-group error";
+    return false;
+  }
 }

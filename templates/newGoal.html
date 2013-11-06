@@ -10,7 +10,7 @@
 {% block body %}
 <input type=hidden id="hdnUname" value="{% if current_user %} {{ current_user.name }} {% endif %}"/>
 
-<form action="/" id="newGoalForm" name="newGoalForm"  onsubmit="return validateForm()" method="get" class="well">
+<form action="/" id="newGoalForm" name="newGoalForm"  onsubmit="return validateNewGoalForm()" method="get" class="well">
    
 	<div class="container">
 		<div class="row">
@@ -56,7 +56,8 @@
 			</div>
 			
 			<div class="span4">
-				<textarea rows="3" id="tbGoalDesc" name="goalDescription" onkeypress="return imposeMaxLength(this, 140);" ></textarea>
+				<textarea rows="3" id="tbGoalDesc" name="goalDescription" maxlength="140">
+				</textarea>
 			</div>
 
 			</div>
@@ -87,10 +88,10 @@
 		
 		<div class="row">
 			<div class="span3">
-				<button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postToFeed('publicBtnClicked')">Tell The World!</button>
+				<button id="btnGoalSubmitPublic" class="btn btn-primary" type="submit" onclick="postGoalToWall('publicBtnClicked')">Tell The World!</button>
 			</div>
 			<div class="span3">
-				<button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit" onclick="postToFeed('privateBtnClicked')">Private Goal</button></div>
+				<button id="btnGoalSubmitPrivate" class="btn btn-primary" type="submit" onclick="postGoalToWall('privateBtnClicked')">Private Goal</button></div>
 		</div>
 	       <input type="hidden" id="userChosePublic" name="goalPublic" value="private"/>
 
@@ -115,97 +116,19 @@
 <script src="bootstrap/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 
-	$(function(){
-		$('#datePickerDL').datepicker();
-		document.getElementById('datePickerDL').style.visibility="hidden";
-	});
+$(function(){
+	$('#datePickerDL').datepicker();
+	document.getElementById('datePickerDL').style.visibility="hidden";
+});
 
-	function postToFeed(userSetPublic) {
-		var goalTitle = document.getElementById('tbGoalName').value;
-		var goalDesc = document.getElementById('tbGoalDesc').value;
+function changeDatePickerAv(){
+	var selectValue = document.getElementById('cbEnableDeadline').checked;
+	if (selectValue == true)
+	  document.getElementById('datePickerDL').style.visibility="visible";
+	else
+	  document.getElementById('datePickerDL').style.visibility="hidden";
+}
 
-		if (goalTitle == "" || goalDesc == "") {
-			return;
-		}
-
-		if (userSetPublic == "publicBtnClicked") {
-			document.getElementById('userChosePublic').value = "public";
-			var username = document.getElementById('hdnUname').value;
-			var goalTypeSelect = document.getElementById('ddGoalType').value;
-			var pictureLink = "https://improve-facebookapp.appspot.com/bootstrap/img/"; 
-
-			switch(goalTypeSelect){
-				case "Fitness Goal":
-				  pictureLink+="fitness.png";
-				  break;
-				case "Life Goal":
-				  pictureLink+="life.png";
-				  break;
-				case "Academic Goal":
-				  pictureLink+="academic.png";
-				  break;
-
-			}		
-
-			var goalDeadline = document.getElementById('datePickerDL').value;
-			var fbDescription = username + " wants to " + goalTitle + " by " + goalDeadline;
-			var fbName = username + "has set a new goal";
-
-	    // calling the API ...
-      //TODO Change picture to pictureLink variable once image hosting works
-      var obj = {
-        method: 'feed',
-        redirect_uri: 'http://apps.facebook.com/improve-app/',
-        link: 'http://apps.facebook.com/improve-app/',
-        picture: pictureLink, 
-        name: fbName,
-        caption: goalTypeSelect,
-        description: fbDescription
-      };
-
-      function callback(response) {
-  	    if (response && response.post_id)
-   				console.log('Post was published.');
-  			else
-    			console.log('Post was not published.');
-  		}
-
-	    FB.ui(obj, callback);
-     }
-     else {
-      // user selected private
-      document.getElementById('userChosePublic').value = "private";
-     }
-  }
-  
-  function changeDatePickerAv(){
-    var selectValue = document.getElementById('cbEnableDeadline').checked;
-    if (selectValue == true)
-			document.getElementById('datePickerDL').style.visibility="visible";
-    else
-			document.getElementById('datePickerDL').style.visibility="hidden";
-  }
-
-  function validateForm() {
-		var goalTitleVal=document.forms["newGoalForm"]["tbGoalName"].value;
-		var goalDescVal=document.forms["newGoalForm"]["tbGoalDesc"].value;
-
-		if (goalTitleVal==null || goalTitleVal=="") {
-	  	document.getElementById('tbGoalName').placeholder="Please enter a title";
-	  	document.getElementById("divRowTitle").className="control-group error";
-	  	return false;
-		}
-
-		if(goalDescVal==null || goalDescVal==""){
-	  	document.getElementById('tbGoalDesc').placeholder="Please enter a description";
-	  	document.getElementById("divRowDesc").className="control-group error";
-	  	return false;
-		}
-	}
-
-	function imposeMaxLength(Object, MaxLen) {			
-		return (Object.value.length <= MaxLen);
-	}
 </script>
 
 {% endblock %}
